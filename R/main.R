@@ -2,13 +2,18 @@
 #'  @title data_getting
 #'  @param df A dataframe that has group's informations
 #'  @details This function get information from GrupLac
+#' @export
 
 getting_data <- function(df) {
 
-  source(here("scripts",
+
+  source(here("R","scripts",
               "data_getting.R"))
 
-  eval(parse(here("scripts/functions.R"), encoding = "UTF-8"))
+  source(here("R","scripts",
+              "functions.R"))
+
+  #eval(parse(here("R","scripts","functions.R"), encoding = "UTF-8"))
 
   grupo_df <- data_getting_ucla(df)
 
