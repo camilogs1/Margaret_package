@@ -1,0 +1,11 @@
+Package: margaret
+Type: Package
+Title: Scientometric analysis Minciencias
+Version: 0.1.1
+Author: Core of science
+Maintainer: The package maintainer <yourself@somewhere.net>
+Description: This package helps to extract data from Minciencias to analyze scientific production in Colombia
+imports: tidyverse, rvest, here, openxlsx, ,scholar, stringi, xml2
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
