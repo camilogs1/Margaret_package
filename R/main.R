@@ -5,17 +5,22 @@
 #' @export
 
 getting_data <- function(df) {
-
+  library(here)
 
   source(here("R","scripts",
               "data_getting.R"))
 
   source(here("R","scripts",
+              "data_cleaning.R"))
+
+  source(here("R","scripts",
               "functions.R"))
 
-  #eval(parse(here("R","scripts","functions.R"), encoding = "UTF-8"))
+
+
+  eval(parse(here("R","scripts","functions.R"), encoding = "UTF-8"))
 
   grupo_df <- data_getting_ucla(df)
-
-  return(grupo_df)
+  grupo <- data_cleaning_ucla(df, grupo_df)
+  return(grupo)
 }

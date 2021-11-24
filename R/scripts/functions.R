@@ -54,7 +54,7 @@ data_cleaning_researcher <- function(grupo_df) {
 }
 
 
-data_cleaning_main <- function(grupo_df) {
+data_cleaning_main <- function(grupos, grupo_df) {
 
   grupo_main_cleaned <-
     grupo_df[["grupo_main"]] |>
