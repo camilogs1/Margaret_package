@@ -7,7 +7,7 @@
  @param df A dataframe that has group's informations
  @details This function get information from GrupLac}
 \usage{
-getting_data(df)
+getting_data(...)
 }
 \description{
 @import tidyverse, rvest, here, openxlsx, ,scholar, stringi, xml2

@@ -4,21 +4,18 @@
 #'  @details This function get information from GrupLac
 #' @export
 
-getting_data <- function(df) {
-  library(here)
+getting_data <- function(df, ...) {
 
-  source(here("R","scripts",
-              "data_getting.R"))
+  data <- list(...)
+  researchers <- data[1]
 
-  source(here("R","scripts",
-              "data_cleaning.R"))
+  source("R/data_getting.R")
 
-  source(here("R","scripts",
-              "functions.R"))
+  source("R/data_cleaning.R")
 
+  source("R/functions.R")
 
-
-  eval(parse(here("R","scripts","functions.R"), encoding = "UTF-8"))
+  eval(parse("R/functions.R", encoding = "UTF-8"))
 
   grupo_df <- data_getting_ucla(df)
   grupo <- data_cleaning_ucla(df, grupo_df)
