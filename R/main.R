@@ -1,4 +1,4 @@
-#'  @import tidyverse, rvest, openxlsx, ,scholar, stringi, xml2, lubridate
+#'  @import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate
 #'  @title data_getting
 #'  @param df A dataframe that has group's informations
 #'  @details This function get information from GrupLac

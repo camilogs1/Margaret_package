@@ -1,5 +1,6 @@
 library(lubridate)
 library(stringi)
+library(scholar)
 # source(here("scripts",
 #             "functions.R"))
 
