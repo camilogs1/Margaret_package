@@ -2,15 +2,15 @@
 % Please edit documentation in R/main.R
 \name{getting_data}
 \alias{getting_data}
-\title{@import tidyverse, rvest, here, openxlsx, ,scholar, stringi, xml2
+\title{@import tidyverse, rvest, openxlsx, ,scholar, stringi, xml2, lubridate
  @title data_getting
  @param df A dataframe that has group's informations
  @details This function get information from GrupLac}
 \usage{
-getting_data(...)
+getting_data(df, researchers)
 }
 \description{
-@import tidyverse, rvest, here, openxlsx, ,scholar, stringi, xml2
+@import tidyverse, rvest, openxlsx, ,scholar, stringi, xml2, lubridate
  @title data_getting
  @param df A dataframe that has group's informations
  @details This function get information from GrupLac

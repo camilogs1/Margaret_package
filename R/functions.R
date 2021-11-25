@@ -9,7 +9,7 @@ getting_scholar_h_index <- function(data_scholar) {
   return(scholar_index)
 }
 
-data_cleaning_researcher <- function(grupo_df) {
+data_cleaning_researcher <- function(grupo_df, researchers) {
 
   grupo_researcher_cleaned <-
     grupo_df[["grupo_researcher"]] |>
@@ -38,18 +38,42 @@ data_cleaning_researcher <- function(grupo_df) {
     mutate(integrantes = str_to_upper(integrantes),
            integrantes = stri_trans_general(str = integrantes,
                                             id = "Latin-ASCII"),
-           integrantes = str_squish(integrantes)) |>
-    left_join(researchers, by = c("integrantes" = "researcher")) |>
-    mutate(h_index = ifelse(is.na(h_index),
-                            0,
-                            h_index)) |>
-    group_by(integrantes,
-             vinculacion,
-             url,
-             posgrade,
-             clasification,
-             h_index,
-             id_scholar) |>
+           integrantes = str_squish(integrantes))
+
+    if(researchers != 0){
+      researchers <- researchers |>
+        unique() |>
+        mutate(researcher = str_to_upper(researcher),
+               researcher = stri_trans_general(str = researcher,
+                                               id = "Latin-ASCII")) |>
+        mutate(h_index = map(id_scholar, safely(get_profile))) |>
+        unnest_wider(h_index) |>
+        unnest_wider(result) |>
+        select(researcher, id_scholar, h_index) |>
+        mutate(h_index = if_else(is.na(h_index), 0, h_index))
+
+      grupo_researcher_cleaned_2 <-
+        grupo_researcher_cleaned_2 |> left_join(researchers, by = c("integrantes" = "researcher")) |>
+        mutate(h_index = ifelse(is.na(h_index), 0, h_index)) |>
+        group_by(integrantes,
+                 vinculacion,
+                 url,
+                 posgrade,
+                 clasification,
+                 h_index,
+                 id_scholar)
+    }
+  else{
+    grupo_researcher_cleaned_2 <-
+      grupo_researcher_cleaned_2 |>
+      group_by(integrantes,
+               vinculacion,
+               url,
+               posgrade,
+               clasification)
+  }
+  grupo_researcher_cleaned_2 <-
+    grupo_researcher_cleaned_2 |>
     mutate(grupo = paste0(grupo,
                           collapse = "; "),
            horas_dedicacion = paste0(horas_dedicacion,
@@ -58,7 +82,7 @@ data_cleaning_researcher <- function(grupo_df) {
                                        collapse = "; ")) |>
     unique()
 
-  return(grupo_researcher_cleaned)
+  return(grupo_researcher_cleaned_2)
 
 }
 
