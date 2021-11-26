@@ -3,7 +3,7 @@ library(rvest)
 library(here)
 library(xml2)
 
-data_getting_ucla <- function(grupos) {
+data_getting <- function(grupos) {
 
   data_grupos_all <-
     apply(grupos, 1, function(x){

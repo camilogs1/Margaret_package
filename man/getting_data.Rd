@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{getting_data}
 \alias{getting_data}
-\title{@import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate
+\title{@import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate, gt, treemapify, kableExtra, tidytext, SnowballC, widyr, igraph
  @title data_getting
  @param df A dataframe that has group's informations
  @details This function get information from GrupLac}
@@ -10,7 +10,7 @@
 getting_data(df, researchers)
 }
 \description{
-@import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate
+@import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate, gt, treemapify, kableExtra, tidytext, SnowballC, widyr, igraph
  @title data_getting
  @param df A dataframe that has group's informations
  @details This function get information from GrupLac

@@ -1,10 +1,8 @@
 library(lubridate)
 library(stringi)
 library(scholar)
-# source(here("scripts",
-#             "functions.R"))
 
-data_cleaning_ucla <- function(grupos, grupo_df, researchers) {
+data_cleaning <- function(grupos, grupo_df, researchers) {
 
   grupo_main_cleaned <- data_cleaning_main(grupos, grupo_df)
   grupo_product_cleaned <- data_cleaning_product(grupo_df)

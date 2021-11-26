@@ -5,7 +5,7 @@ Version: 0.1.1
 Author: Core of science
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: This package helps to extract data from Minciencias to analyze scientific production in Colombia
-importsFrom: tidyverse, rvest, here, openxlsx, ,scholar, stringi, xml2, lubridate
+importsFrom: tidyverse, rvest, here, openxlsx, scholar, stringi, xml2, lubridate, gt, treemapify, kableExtra, tidytext, SnowballC, widyr, igraph
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

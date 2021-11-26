@@ -1,4 +1,4 @@
-#'  @import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate
+#'  @import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate, gt, treemapify, kableExtra, tidytext, SnowballC, widyr, igraph
 #'  @title data_getting
 #'  @param df A dataframe that has group's informations
 #'  @details This function get information from GrupLac
@@ -14,6 +14,10 @@ getting_data <- function(df, researchers) {
 
   source("R/data_cleaning.R")
 
+  source("R/data_tidying.R")
+
+  source("R/data_analysis_descriptive.R")
+
   source("R/functions.R")
 
   eval(parse("R/functions.R", encoding = "UTF-8"))
@@ -23,7 +27,10 @@ getting_data <- function(df, researchers) {
            grupo = stri_trans_general(str = grupo,
                                       id = "Latin-ASCII"))
 
-  grupo_df <- data_getting_ucla(df)
-  grupo <- data_cleaning_ucla(df, grupo_df, researchers)
-  return(grupo)
+  grupo_df <- data_getting(df)
+  produccion_grupos <- data_cleaning(df, grupo_df, researchers)
+  produccion_grupos <- data_tidying(produccion_grupos, df)
+  produccion_grupos <- data_analysis_descriptive(produccion_grupos, df)
+
+  return(produccion_grupos)
 }
