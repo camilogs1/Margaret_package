@@ -2,16 +2,16 @@
 % Please edit documentation in R/main.R
 \name{getting_data}
 \alias{getting_data}
-\title{@import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate, gt, treemapify, kableExtra, tidytext, SnowballC, widyr, igraph
- @title data_getting
- @param df A dataframe that has group's informations
- @details This function get information from GrupLac}
+\title{data_getting}
 \usage{
 getting_data(df, researchers)
 }
+\arguments{
+\item{df}{A dataframe that has group's informations}
+}
 \description{
-@import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate, gt, treemapify, kableExtra, tidytext, SnowballC, widyr, igraph
- @title data_getting
- @param df A dataframe that has group's informations
- @details This function get information from GrupLac
+data_getting
+}
+\details{
+This function get information from GrupLac
 }

@@ -1,8 +1,10 @@
-#'  @import tidyverse, rvest, openxlsx, scholar, stringi, xml2, lubridate, gt, treemapify, kableExtra, tidytext, SnowballC, widyr, igraph
-#'  @title data_getting
-#'  @param df A dataframe that has group's informations
-#'  @details This function get information from GrupLac
+#' @title data_getting
+#' @import SnowballC here gt kableExtra lubridate openxlsx rvest scholar stringi tidytext tidyverse treemapify widyr xml2
+#' @param df A dataframe that has group's informations
+#' @details This function get information from GrupLac
 #' @export
+#' @importFrom stats end var
+#' @importFrom utils data
 
 getting_data <- function(df, researchers) {
 

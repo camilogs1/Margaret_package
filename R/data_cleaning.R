@@ -1,5 +1,5 @@
-library(lubridate)
-library(stringi)
+#library(lubridate)
+#library(stringi)
 library(scholar)
 
 data_cleaning <- function(grupos, grupo_df, researchers) {
