@@ -1,13 +1,13 @@
-library(tidyverse)
-library(here)
-library(gt)
-library(treemapify)
-library(kableExtra)
-library(stringi)
-library(tidytext)
-library(SnowballC)
-library(widyr)
-library(igraph)
+# library(tidyverse)
+# library(here)
+# library(gt)
+# library(treemapify)
+# library(kableExtra)
+# library(stringi)
+# library(tidytext)
+# library(SnowballC)
+# library(widyr)
+# library(igraph)
 
 # Finding similarities per group
 

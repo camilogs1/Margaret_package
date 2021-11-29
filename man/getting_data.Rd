@@ -8,6 +8,8 @@ getting_data(df, researchers)
 }
 \arguments{
 \item{df}{A dataframe that has group's informations}
+
+\item{researchers}{A dataframe with ID from google scholar form researchers}
 }
 \description{
 data_getting
