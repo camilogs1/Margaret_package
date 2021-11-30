@@ -14,15 +14,11 @@ getting_data <- function(df, researchers) {
   }
 
   source("R/data_getting.R")
-
   source("R/data_cleaning.R")
-
   source("R/data_tidying.R")
-
+  source("R/merge_quality_articles.R")
   source("R/data_analysis_descriptive.R")
-
   source("R/functions.R")
-
   eval(parse("R/functions.R", encoding = "UTF-8"))
 
   df <- df |>
@@ -33,6 +29,7 @@ getting_data <- function(df, researchers) {
   grupo_df <- data_getting(df)
   produccion_grupos <- data_cleaning(df, grupo_df, researchers)
   produccion_grupos <- data_tidying(produccion_grupos, df)
+  produccion_grupos <- merge_quality_articles(produccion_grupos)
   produccion_grupos <- data_analysis_descriptive(produccion_grupos, df)
 
   return(produccion_grupos)

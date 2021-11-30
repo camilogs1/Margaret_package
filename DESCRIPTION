@@ -7,7 +7,21 @@ Maintainer: Sebastian Robledo <sebastian.robledogi@amigo.edu.co>
 Description: This package helps to extract data from Minciencias to analyze scientific production in Colombia
 Depends:
     R (>= 3.4.0)
-Imports: SnowballC, gt, here, kableExtra, lubridate, openxlsx, rvest, scholar, stringi, tidytext, tidyverse, treemapify, widyr, xml2
+Imports: 
+    SnowballC,
+    gt,
+    here,
+    kableExtra,
+    lubridate,
+    openxlsx,
+    rvest,
+    scholar,
+    stringi,
+    tidytext,
+    tidyverse,
+    treemapify,
+    widyr,
+    xml2
 License: MIT
 Encoding: UTF-8
 LazyData: true
