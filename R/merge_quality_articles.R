@@ -7,7 +7,7 @@ merge_quality_articles <- function(produccion_grupos){
   articulos_unicos <-
     produccion_grupos[[2]][["articulos"]]
 
-  #devtools::install_github("ikashnitsky/sjrdata")
+  devtools::install_github("ikashnitsky/sjrdata")
   library(sjrdata)
 
   scimago_2020 <- scimago_2020 |>
@@ -98,6 +98,7 @@ merge_quality_articles <- function(produccion_grupos){
     mutate(categoria_revista = ifelse(is.na(categoria_revista),"Sin categoria",categoria_revista),
            SJR_Q = ifelse(is.na(SJR_Q),"Sin categoria",SJR_Q))
 
+  rm(scimago_2020,international_journals_2016_2020,internationals_journal_2021)
   produccion_grupos[[2]][["articulos"]] <- articulos_unicos
 
   return(produccion_grupos)

@@ -32,5 +32,9 @@ getting_data <- function(df, researchers) {
   produccion_grupos <- merge_quality_articles(produccion_grupos)
   produccion_grupos <- data_analysis_descriptive(produccion_grupos, df)
 
+  #export xlsx file
+  produccion_grupos = c(produccion_grupos[1],produccion_grupos[3],produccion_grupos[[2]])
+  write_xlsx(produccion_grupos, "margaret.xlsx", col_names = TRUE, format_headers = TRUE, use_zip64 = TRUE)
+
   return(produccion_grupos)
 }
