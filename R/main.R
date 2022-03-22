@@ -1,27 +1,63 @@
-#' @title data_getting
-#' @import SnowballC here gt kableExtra lubridate openxlsx rvest scholar stringi tidytext tidyverse treemapify widyr xml2
-#' @param df A dataframe that has group's informations
+#' @title Data getting
+#' @description This function get information from GrupLac.
+#' @import usethis dplyr stringr tidyr rlang devtools lubridate SnowballC rvest scholar stringi tidytext tidyverse treemapify widyr writexl
+#' @param groups A dataframe with information about groups and links from GrupLAC
 #' @param researchers A dataframe with ID from google scholar form researchers
-#' @details This function get information from GrupLac
+#' @details Extracts data from Minciencias web pages about research groups and researchers.
 #' @export
+#' @importFrom tibble column_to_rownames
+#' @importFrom purrr map safely
+#' @importFrom readr parse_date locale read_csv
+#' @importFrom dplyr select mutate filter
 #' @importFrom stats end var
 #' @importFrom utils data
+#' @importFrom lubridate ym today
+#' @importFrom igraph get.edgelist simplify graph_from_data_frame E
+#' @examples
+#' \dontrun{
+#' Load data in a dataframe of r
+#' groups <- read.csv(".../groups_information.csv", header=T, sep=",")
+#'
+#' margaret_data <- getting_data(groups)
+#'
+#' #or just
+#' margaret::getting_data(groups)
+#' }
 
-getting_data <- function(df, researchers) {
+getting_data <- function(groups, researchers) {
+#
+#   usethis::use_package('rlang')
+#   usethis::use_package('tidyverse')
+#   usethis::use_package('SnowballC')
+#   usethis::use_package('here')
+#   usethis::use_package('gt')
+#   usethis::use_package('kableExtra')
+#   usethis::use_package('lubridate')
+#   usethis::use_package('openxlsx')
+#   usethis::use_package('rvest')
+#   usethis::use_package('scholar')
+#   usethis::use_package('stringi')
+#   usethis::use_package('tidytext')
+#   usethis::use_package('treemapify')
+#   usethis::use_package('widyr')
+#   usethis::use_package('xml2')
+#   usethis::use_package('writexl')
+#   usethis::use_package('igraph')
+  grupo <- NULL
 
   if(missing(researchers)){
     researchers = 0
   }
 
-  #source("R/data_getting.R")
-  #source("R/data_cleaning.R")
-  #source("R/data_tidying.R")
-  #source("R/merge_quality_articles.R")
-  #source("R/data_analysis_descriptive.R")
-  #source("R/functions.R")
-  eval(parse("R/functions.R", encoding = "UTF-8"))
+  # source("R/data_getting.R")
+  # source("R/data_cleaning.R")
+  # source("R/data_tidying.R")
+  # source("R/merge_quality_articles.R")
+  # source("R/data_analysis_descriptive.R")
+  # source("R/functions.R")
+  # eval(parse("R/functions.R", encoding = "UTF-8"))
 
-  df <- df |>
+  df <- groups |>
     mutate(grupo = str_to_upper(grupo),
            grupo = stri_trans_general(str = grupo,
                                       id = "Latin-ASCII"))

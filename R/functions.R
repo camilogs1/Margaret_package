@@ -1,5 +1,7 @@
 getting_scholar_h_index <- function(data_scholar) {
 
+  id_scholar <- h_index <- integrantes <- NULL
+
   scholar_index <-
     data_scholar |>
     mutate(h_index = map(id_scholar, get_profile)) |>
@@ -10,6 +12,11 @@ getting_scholar_h_index <- function(data_scholar) {
 }
 
 data_cleaning_researcher <- function(grupo_df, researchers) {
+
+  inicio_fin_vinculacion <- inicio_vinculacion <- fin_vinculacion <-
+    posgrade <- integrantes <- researcher <- id_scholar <- h_index <-
+    result <- vinculacion <- clasification <- grupo <- horas_dedicacion <-
+    NULL
 
   grupo_researcher_cleaned <-
     grupo_df[["grupo_researcher"]] |>
@@ -88,6 +95,11 @@ data_cleaning_researcher <- function(grupo_df, researchers) {
 
 
 data_cleaning_main <- function(grupos, grupo_df) {
+
+  fecha_creacion <- departamento_ciudad <- departamento <- ciudad <-
+    clasificacion <- area_conocimiento <- area_conocimiento_0 <- grupo <-
+    lider <- web <- email <- area_conocimiento_1 <- area_conocimiento_2 <-
+    area_conocimiento_3 <- NULL
 
   grupo_main_cleaned <-
     grupo_df[["grupo_main"]] |>
@@ -236,6 +248,8 @@ data_cleaning_product <- function(grupo_df) {
 
 data_getting_product <- function(grupos, data_grupos_all){
 
+  producto <- categoria <- NULL
+
   grupo_df <-
     tibble(grupo = character(),
            producto = character(),
@@ -291,6 +305,9 @@ data_getting_product <- function(grupos, data_grupos_all){
 
 data_getting_main <- function(grupos, data_grupos_all){
 
+  fecha_creacion <- departamento_ciudad <- lider <- web <-
+    email <- clasificacion <- area_conocimiento <- NULL
+
   df_group_main = tibble()
 
   for (i in 1:length(data_grupos_all)) {
@@ -328,6 +345,9 @@ data_getting_main <- function(grupos, data_grupos_all){
 
 data_getting_researcher <- function(grupos, data_grupos_all){
 
+  X1 <- X2 <- X3 <- X4 <- nombre <- integrantes <- vinculacion <-
+    horas_dedicacion <- inicio_fin_vinculacion <- NULL
+
   df_researcher = tibble()
 
   for (i in 1:length(data_grupos_all)) {
@@ -364,13 +384,30 @@ data_getting_researcher <- function(grupos, data_grupos_all){
   return(df_researcher)
 }
 
-
+A <- "\u00c1"
+a <- "\u00e1"
+E <- "\u00c9"
+e <- "\u00e9"
+I <- "\u00cd"
+i <- "\u00ed"
+O <- "\u00d3"
+o <- "\u00f3"
+U <- "\u00da"
+u <- "\u00fa"
+N <- "\u00d1"
+n <- "\u00f1"
 
 trabajos_dirigidos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_4 <- info_5 <- info_6 <- info_8 <- info_12 <-
+  info_14 <- info_1 <- titulo <- info_2 <- info_3 <- hasta <- info_7 <- tipo_producto <-
+  estudiante <- info_9 <- programa_academico <- info_10 <- paginas <- desde <-
+  valoracion <- info_11 <- institucion <- info_13 <- tutor_coautor <-
+  NULL
+
   trabajosdirigidos =
     grupo_df %>%
-    filter(categoria == "Trabajos dirigidos/turorías") %>%
+    filter(categoria == paste("Trabajos dirigidos/turor",i,"as", sep = "")) %>%
     separate(producto,
              c("info_1","info_2","info_3","info_4","info_5",
                "info_6","info_7","info_8","info_9","info_10",
@@ -395,7 +432,7 @@ trabajos_dirigidos_ucla <- function(grupo_df) {
            estudiante = str_remove(estudiante, ",$"),
            programa_academico = str_remove(info_9, ".*:"),
            programa_academico = str_trim(programa_academico),
-           paginas = str_remove(info_10, ".*páginas: "),
+           paginas = str_remove(info_10, paste(".*p",a,"ginas: ", sep="")),
            paginas= str_remove(paginas, ",.*"),
            valoracion= str_extract(info_10, ",.*"),
            valoracion= str_remove(valoracion, "^,"),
@@ -403,7 +440,7 @@ trabajos_dirigidos_ucla <- function(grupo_df) {
            valoracion= str_remove(valoracion, ","),
            valoracion= str_trim(valoracion),
            institucion = str_trim(info_11),
-           institucion = str_remove(institucion, ".*Institución: "),
+           institucion = str_remove(institucion, paste(".*Instituci",o,"n: ", sep = "")),
            tutor_coautor = str_trim(info_13),
            tutor_coautor = str_remove(tutor_coautor, ".*: ")) %>%
     select(-info_2,
@@ -420,9 +457,13 @@ trabajos_dirigidos_ucla <- function(grupo_df) {
 
 eventos_cientificos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_2 <- info_4 <- info_1 <-
+    tipo_evento <- titulo <- info_3 <- info_5 <- tipo_vinculacion <-
+    NULL
+
   grupo_df_EventosCientificos <-
     grupo_df %>%
-    filter(categoria == "Eventos Científicos") %>%
+    filter(categoria == paste("Eventos Cient",i,"ficos", sep ="")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5"),
              sep = "\r\n" )%>%
@@ -440,16 +481,16 @@ eventos_cientificos_ucla <- function(grupo_df) {
            fecha_inicio = str_remove(info_2, "-$"),
            fecha_fin = str_remove(info_3, ".*hasta")) %>%
     select(-info_2,-info_3) %>%
-    mutate(info_4 = str_remove(info_4, "Ámbito:"),
+    mutate(info_4 = str_remove(info_4, paste(A,"mbito:", sep = "")),
            ambito = str_remove(info_4, ",.*"),
-           info_4= str_extract(info_4, "Tipos de participación:.*"),
-           info_4= str_remove(info_4, ".*Tipos de participación:"),
-           tipo_participacion=str_remove(info_4,"Nombre de la institución.*"),
-           info_4= str_extract(info_4, "Nombre de la institución.*"),
-           nombre_Institucion= str_remove(info_4, ".*Nombre de la institución:")) %>%
+           info_4= str_extract(info_4,  paste("Tipos de participaci",o,"n:.*", sep = "")),
+           info_4= str_remove(info_4, paste(".*Tipos de participaci",o,"n:", sep = "")),
+           tipo_participacion=str_remove(info_4,paste("Nombre de la instituci",o,"n.*", sep = "")),
+           info_4= str_extract(info_4, paste("Nombre de la instituci",o,"n.*", sep = "")),
+           nombre_Institucion= str_remove(info_4, paste(".*Nombre de la instituci",o,"n:", sep = ""))) %>%
     select(-info_4) %>%
     mutate(tipo_vinculacion = str_remove(info_5,"Nombre.*"),
-           tipo_vinculacion = str_remove(tipo_vinculacion,"Ámbito.*"),
+           tipo_vinculacion = str_remove(tipo_vinculacion, paste(A,"mbito.*", sep = "")),
            tipo_vinculacion = str_trim(tipo_vinculacion)) %>%
     select(-info_5)
 
@@ -458,9 +499,13 @@ eventos_cientificos_ucla <- function(grupo_df) {
 
 articulos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_5 <- info_4 <- info_2 <-
+    info_3 <- info_1 <- tipo_producto <- titulo <- ISSN <-
+    vol <- fasc <- pags <- DOI <- autores <- pais_revista <- NULL
+
   grupo_df_articulos_lost_1 <-
     grupo_df %>%
-    filter(categoria == "Artículos publicados") %>%
+    filter(categoria == paste("Art",i,"culos publicados", sep ="")) %>%
     separate(producto,
              c("info_1", "info_2", "info_3", "info_4", "info_5"),
              sep = "\r\n" ) %>%
@@ -496,12 +541,12 @@ articulos_ucla <- function(grupo_df) {
            vol = str_remove(vol, "vol:"),
            info_2 = str_extract(info_4, "\\s.*"),
            info_2 = str_trim(info_4),
-           fasc = str_remove(info_4, "págs.*"),
+           fasc = str_remove(info_4, paste("p",a,"gs.*", sep = "")),
            fasc = str_remove(fasc, "fasc: "),
-           info_2 = str_extract(info_4, "págs.*"),
+           info_2 = str_extract(info_4, paste("p",a,"gs.*", sep = "")),
            info_2 = str_trim(info_4),
            pags = str_remove(info_4, ", DOI.*"),
-           pags = str_remove(pags, "págs: "),
+           pags = str_remove(pags, paste("p",a,"gs: ", sep = "")),
            DOI = str_extract(info_4, "DOI.*"),
            DOI = str_remove(DOI, "DOI:")) %>%
     select(-info_4,
@@ -514,7 +559,7 @@ articulos_ucla <- function(grupo_df) {
 
   grupo_df_articulos_lost_2 <-
     grupo_df %>%
-    filter(categoria == "Artículos publicados") %>%
+    filter(categoria == paste("Art",i,"culos publicados", sep = "")) %>%
     separate(producto,
              c("info_1", "info_2", "info_3", "info_4", "info_5"),
              sep = "\r\n" ) %>%
@@ -546,12 +591,12 @@ articulos_ucla <- function(grupo_df) {
            vol = str_remove(vol, "vol:"),
            info_3 = str_extract(info_3, "\\s.*"),
            info_3 = str_trim(info_3),
-           fasc = str_remove(info_3, "págs.*"),
+           fasc = str_remove(info_3, paste("p",a,"gs.*", sep = "")),
            fasc = str_remove(fasc, "fasc: "),
-           info_3 = str_extract(info_3, "págs.*"),
+           info_3 = str_extract(info_3, paste("p",a,"gs.*", sep = "")),
            info_3 = str_trim(info_3),
            pags = str_remove(info_3, ", DOI.*"),
-           pags = str_remove(pags, "págs: "),
+           pags = str_remove(pags, paste("p",a,"gs: ", sep = "")),
            DOI = str_extract(info_3, "DOI.*"),
            DOI = str_remove(DOI, "DOI:")) %>%
     select(-info_2,
@@ -564,7 +609,7 @@ articulos_ucla <- function(grupo_df) {
 
   grupo_df_articulos <-
     grupo_df %>%
-    filter(categoria == "Artículos publicados") %>%
+    filter(categoria == paste("Art",i,"culos publicados", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5"),
              sep = "\r\n" ) %>%
@@ -600,12 +645,12 @@ articulos_ucla <- function(grupo_df) {
            vol = str_remove(vol, "vol:"),
            info_2 = str_extract(info_2, "\\s.*"),
            info_2 = str_trim(info_2),
-           fasc = str_remove(info_2, "págs.*"),
+           fasc = str_remove(info_2, paste("p",a,"gs.*", sep = "")),
            fasc = str_remove(fasc, "fasc: "),
-           info_2 = str_extract(info_2, "págs.*"),
+           info_2 = str_extract(info_2, paste("p",a,"gs.*", sep = "")),
            info_2 = str_trim(info_2),
            pags = str_remove(info_2, ", DOI.*"),
-           pags = str_remove(pags, "págs: "),
+           pags = str_remove(pags, paste("p",a,"gs: ", sep = "")),
            DOI = str_extract(info_2, "DOI.*"),
            DOI = str_remove(DOI, "DOI:")) %>%
     select(-info_2) %>%
@@ -617,6 +662,9 @@ articulos_ucla <- function(grupo_df) {
 }
 
 proyectos_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_1 <- Tipo_proyecto <- Titulo <- Fecha_inicio <-
+  info_2 <- info_3 <- fecha_inicio <- info_4 <- info_5 <- NULL
 
   grupo_df_proyectos <-
     grupo_df %>%
@@ -643,9 +691,13 @@ proyectos_ucla <- function(grupo_df) {
 
 capitulos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_3 <- info_1 <- tipo_producto <-
+    titulo_capitulo <- info_2 <- pais <- ano <- titulo_libro <-
+    ISBN <- vol <- pags <- info_4 <- NULL
+
   grupo_df_capitulos_libros_publicados =
     grupo_df %>%
-    filter(categoria == "Capítulos de libro publicados") %>%
+    filter(categoria == paste("Cap",i,"tulos de libro publicados", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4"),
              sep = "\r\n" ) %>%
@@ -669,8 +721,8 @@ capitulos_ucla <- function(grupo_df) {
            ISBN = str_remove(info_2, ".*ISBN: "),
            ISBN = str_remove(ISBN, ", Vol.*"),
            vol = str_remove(info_2, ".*Vol."),
-           vol = str_remove(vol, ", pág.*"),
-           pags = str_remove(info_2, ".*pág.:"),
+           vol = str_remove(vol, paste(", p",a,"g.*", sep = "")),
+           pags = str_remove(info_2, paste(".*p",a,"g.:", sep = "")),
            pags = str_remove(pags, ",.*"),
            editorial = str_remove(info_2, ".*Ed. "),
            autores = str_remove(info_4, ".*Autores: ")) %>%
@@ -678,6 +730,11 @@ capitulos_ucla <- function(grupo_df) {
 }
 
 jurado_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_6 <- info_1 <- Nivel_Academico <- Titulo <-
+  info_2 <- pais <- anno <- info_3 <- Idioma <- Medio_divulgacion <- info_4 <-
+  Sitio_Web <- Nombre_del_Orientado <- info_5 <- Programa_Academico <-
+  Institucion <- info_7 <- Autores <- NULL
 
   grupo_df_Jurado <-
     grupo_df %>%
@@ -724,9 +781,15 @@ jurado_ucla <- function(grupo_df) {
 
 cursos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Tipo_Curso <- Nombre_curso <-
+    info_2 <- Ano <- info_3 <- Idioma <- info_4 <- sitio_web <-
+    Participacion <- info_5 <- Duracion_semanas <- Finalidad <-
+    info_6 <- lugar <- Institucion_Financiadora <- info_7 <-
+    info_8 <- NULL
+
   grupo_df_CursosCortaDuracion <-
     grupo_df %>%
-    filter(categoria == "Curso de Corta Duración Dictados") %>%
+    filter(categoria == paste("Curso de Corta Duraci",o,"n Dictados", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7","info_8"),
              sep = "\r\n" )%>%
@@ -754,7 +817,7 @@ cursos_ucla <- function(grupo_df) {
            sitio_web=str_remove(sitio_web, ".*:"),
            Participacion=str_remove(info_4, ".*, "),
            Participacion=str_remove(Participacion, ","),
-           Participacion=str_remove(Participacion, "Participación como"),
+           Participacion=str_remove(Participacion, paste("Participaci",o,"n como", sep = "")),
            Participacion=str_trim(Participacion)
     ) %>%
     select(-info_4) %>%
@@ -769,8 +832,8 @@ cursos_ucla <- function(grupo_df) {
            lugar= str_remove(info_6, ",.*"),
            lugar= str_remove(lugar, ".*:"),
            lugar= str_trim(lugar),
-           Institucion_Financiadora= str_extract(info_6, "Institución financiadora:.*"),
-           Institucion_Financiadora= str_remove(Institucion_Financiadora, "Institución financiadora:"),
+           Institucion_Financiadora= str_extract(info_6, paste("Instituci",o,"n financiadora:.*", sep = "")),
+           Institucion_Financiadora= str_remove(Institucion_Financiadora, paste("Instituci",o,"n financiadora:", sep = "")),
            Institucion_Financiadora= str_trim(Institucion_Financiadora)) %>%
     select(-info_6,-info_7) %>%
     mutate(info_8 = str_trim(info_8),
@@ -780,9 +843,13 @@ cursos_ucla <- function(grupo_df) {
 
 otros_articulos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_2 <- info_4 <- info_1 <- tipo_producto <-
+  titulo <- pais <- revista <- ISSN <- ano <- vol <- fasc <- pags <-
+  autores <- NULL
+
   grupo_df_otros_articulos <-
     grupo_df %>%
-    filter(categoria == "Otros artículos publicados") %>%
+    filter(categoria == paste("Otros art",i,"culos publicados", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5"),
              sep = "\r\n" ) %>%
@@ -833,9 +900,15 @@ otros_articulos_ucla <- function(grupo_df) {
 
 consultorias_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Tipo_Consultoria <-
+    Titulo <- info_2 <- info_3 <- i_1 <- i_2 <- i_3 <- i_4 <-
+    info_5 <- Idioma <- Ciudad <- Disponibilidad <- Duracion <-
+    info_4 <- info_6 <- Num_contrato <- Institucion_Prestadora_servicio <-
+    info_7 <- NULL
+
   grupo_df_consultorias_cientico_tecnologicas <-
     grupo_df%>%
-    filter(categoria == "Consultorías científico-tecnológicas") %>%
+    filter(categoria == paste("Consultor",i,"as cient",i,"fico-tecnol",o,"gicas", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7"),
              sep = "\r\n" )%>%
@@ -878,7 +951,7 @@ consultorias_ucla <- function(grupo_df) {
            Disponibilidad= str_remove(Disponibilidad, ",.*"),
            Disponibilidad= str_remove(Disponibilidad, ".*:"),
            Disponibilidad= str_trim(Disponibilidad),
-           Duracion= str_extract(info_5, "Duración.*"),
+           Duracion= str_extract(info_5, paste("Duraci",o,"n.*", sep = "")),
            Duracion= str_remove(Duracion, ".*:"),
            Duracion= str_remove(Duracion, ",$"),
            Duracion= str_trim(Duracion)
@@ -898,6 +971,10 @@ consultorias_ucla <- function(grupo_df) {
 
 libros_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_6 <- info_1 <- Tipo_producto <-
+  Titulo <- info_2 <- info_3 <- Ano <- info_4 <- ISBN <- info_5 <-
+  Editorial <- info_7 <- Autores <- NULL
+
   grupo_df_librosPublicados <-
     grupo_df %>%
     filter(categoria == "Libros publicados") %>%
@@ -910,7 +987,7 @@ libros_ucla <- function(grupo_df) {
            Tipo_producto = str_remove(info_1, ":.*"),
            Tipo_producto = str_remove(Tipo_producto, ".*-" ),
            Tipo_producto = str_trim(Tipo_producto),
-           Titulo = str_remove(info_1, ".*investigación :"),
+           Titulo = str_remove(info_1, paste(".*investigaci",o,"n :", sep = "")),
            Titulo = str_trim(Titulo)) %>%
     select(-info_1) %>%
     mutate(info_2 = str_trim(info_2),
@@ -937,11 +1014,15 @@ libros_ucla <- function(grupo_df) {
 
 participacion_comites_ucla <- function(grupo_df) {
 
-  #Data cleaning "Participación en comités de evaluación"
+  producto <- info_5 <- info_1 <- tipo_producto <- titulo <- info_2 <-
+  pais <- anno <- info_3 <- sitio_web <- info_4 <- medio_divulgacion <- categoria <-
+  institucion <- info_6 <- autores <- NULL
+
+  #Data cleaning "Participacion en comites de evaluacion"
 
   grupo_df_participacion_comites <-
     grupo_df %>%
-    filter(categoria == "Participación en comités de evaluación") %>%
+    filter(categoria == paste("Participaci",o,"n en comit",e,"s de evaluaci",o,"n", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5", "info_6"),
              sep = "\r\n" ) %>%
@@ -973,9 +1054,13 @@ participacion_comites_ucla <- function(grupo_df) {
 
 demas_trabajos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- info_2 <- Pais <- Ano <-
+    info_3 <- Titulo <- Idioma <- Medio_divulgacion <- info_4 <- info_5 <-
+    Autores <- NULL
+
   grupo_df_demas_trabajos <-
     grupo_df%>%
-    filter(categoria == "Demás trabajos") %>%
+    filter(categoria == paste("Dem,",a,"s trabajos", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5"),
              sep = "\r\n" )%>%
@@ -1009,9 +1094,13 @@ demas_trabajos_ucla <- function(grupo_df) {
 
 informes_investigacion_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Titulo <- info_2 <- Ano <-
+    Proyecto_de_investigacion <- info_3 <- info_4 <- Autores <-
+    NULL
+
   grupo_df_informe_de_investigacion <-
     grupo_df %>%
-    filter(categoria == "Informes de investigación") %>%
+    filter(categoria == paste("Informes de investigaci",o,"n", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4"),
              sep = "\r\n" )%>%
@@ -1038,9 +1127,13 @@ informes_investigacion_ucla <- function(grupo_df) {
 
 innovaciones_gestion_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_4 <- info_1 <- tipo_producto <-
+    titulo <- info_2 <- pais <- anno <- info_3 <- disponibilidad <-
+    info_5 <- autores <- NULL
+
   grupo_df_innov_gestion_empresarial <-
     grupo_df %>%
-    filter(categoria == "Innovaciones generadas en la Gestión Empresarial") %>%
+    filter(categoria == paste("Innovaciones generadas en la Gesti",o,"n Empresarial", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5"),
              sep = "\r\n" ) %>%
@@ -1070,9 +1163,15 @@ innovaciones_gestion_ucla <- function(grupo_df) {
 
 generacion_multimedia_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Tipo_generacion <-
+    Titulo <- info_2 <- Ano <- Pais <- info_3 <- Idioma <-
+    info_4 <- Medio_divulgacion <- Sitio_web <- info_5 <-
+    Emisora <- Instituciones_participantes <- info_6 <-
+    info_7 <- Autores <- NULL
+
   grupo_df_generacion_contenido_multimedia <-
     grupo_df%>%
-    filter(categoria == "Generación de Contenido Multimedia") %>%
+    filter(categoria == paste("Generaci",o,"n de Contenido Multimedia", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7"),
              sep = "\r\n" )%>%
@@ -1123,9 +1222,13 @@ generacion_multimedia_ucla <- function(grupo_df) {
 
 otra_publicacion_divulgativa_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Tipo_Publicacion_divulgativa <- Titulo <-
+  info_2 <- pais <- ano <- libro <- ISBN <- volumen <- Paginas <- Informacion <-
+  Editorial <- info_3 <- info_4 <- Autores <- NULL
+
   grupo_df_otra_publicacion_divulgativa <-
     grupo_df %>%
-    filter(categoria == "Otra publicación divulgativa") %>%
+    filter(categoria == paste("Otra publicaci",o,"n divulgativa", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4"),
              sep = "\r\n" )%>%
@@ -1159,11 +1262,11 @@ otra_publicacion_divulgativa_ucla <- function(grupo_df) {
            volumen=str_remove(volumen, ",.*"),
            volumen=str_remove(volumen, "vol."),
            volumen=str_trim(volumen),
-           Paginas=str_extract(info_2, "págs.*"),
+           Paginas=str_extract(info_2, paste("p",a,"gs.*", sep = "")),
            Paginas=str_remove(Paginas, ",.*"),
            Paginas=str_remove(Paginas, ".*:"),
            Paginas=str_trim(Paginas),
-           Informacion=str_extract(info_2, "págs.*"),
+           Informacion=str_extract(info_2, paste("p",a,"gs.*", sep = "")),
            Informacion=str_extract(Informacion, ",.*"),
            Informacion=str_remove(Informacion, "^,"),
            info_2=str_extract(Informacion, ".*"),
@@ -1185,6 +1288,11 @@ otra_publicacion_divulgativa_ucla <- function(grupo_df) {
 }
 
 documentos_trabajo_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_4 <- info_5 <- info_6 <-
+    info_1 <- tipo_producto <- titulo <- info_2 <- ano <-
+    info_3 <- numero_paginas <- instituciones_participantes <-
+    URL <- DOI <- autores <- NULL
 
   grupo_df_documentos_trabajo <-
     grupo_df %>%
@@ -1225,6 +1333,10 @@ documentos_trabajo_ucla <- function(grupo_df) {
 }
 
 ediciones_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_1 <- Medio <- Titulo <-
+    info_2 <- Pais <- Ano <- info_3 <- Editorial <- Idioma <-
+    info_4 <- Paginas <- info_5 <- info_6 <- Autores <- NULL
 
   grupo_df_ediciones <-
     grupo_df%>%
@@ -1268,9 +1380,12 @@ ediciones_ucla <- function(grupo_df) {
 
 estrategias_pedagogicas_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_3 <- info_1 <- Titulo <-
+    Fecha_inicio <- info_2 <- Descripcion <- NULL
+
   grupo_df_estrategias_pedagogicas <-
     grupo_df %>%
-    filter(categoria == "Estrategias Pedagógicas para el fomento a la CTI") %>%
+    filter(categoria == paste("Estrategias Pedag",o,"gicas para el fomento a la CTI", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7",
                "info_8","info_9","info_10","info_11","info_12","info_13","info_14"
@@ -1292,7 +1407,7 @@ estrategias_pedagogicas_ucla <- function(grupo_df) {
            Fecha_Fin= str_extract(info_2, ".*")) %>%
     select(-info_2) %>%
     mutate(info_3= str_trim(info_3),
-           Descripcion= str_remove(info_3, "Descripción:"),
+           Descripcion= str_remove(info_3, paste("Descripci",o,"n:", sep = "")),
            Descripcion= str_remove(Descripcion, "NA.*"),
            Descripcion= str_remove(Descripcion, ",$"),
            Descripcion= str_trim(Descripcion)) %>%
@@ -1300,6 +1415,10 @@ estrategias_pedagogicas_ucla <- function(grupo_df) {
 }
 
 redes_conocimiento_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_1 <- titulo <- tipo_red <- info_2 <-
+  pais_ciudad <- desde <- info_3 <- hasta <- numero_participantes <-
+  NULL
 
   grupo_df_redes_conocimiento <-
     grupo_df %>%
@@ -1329,9 +1448,13 @@ redes_conocimiento_ucla <- function(grupo_df) {
 
 generacion_contenido_virtual_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Medio <- Titulo <- info_2 <-
+    Fecha <- Entidades_vinculadas <- info_3 <- Sitio_web <- info_4 <-
+    info_5 <- Autores <- NULL
+
   grupo_df_generacion_contenido_virtual <-
     grupo_df%>%
-    filter(categoria == "Generación de Contenido Virtual") %>%
+    filter(categoria == paste("Generaci",o,"n de Contenido Virtual", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5"),
              sep = "\r\n" )%>%
@@ -1364,9 +1487,13 @@ generacion_contenido_virtual_ucla <- function(grupo_df) {
 
 espacios_participacion_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Titulo <- Ciudad <- info_2 <-
+    Fecha_inicio <- Fecha_Fin <- info_3 <- N_participantes <-
+    Pag_web <- NULL
+
   grupo_df_espacio_participacion_ciudadano<-
     grupo_df %>%
-    filter(categoria == "Espacios de Participación Ciudadana") %>%
+    filter(categoria == paste("Espacios de Participaci",o,"n Ciudadana", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3"),
              sep = "\r\n" )%>%
@@ -1401,6 +1528,11 @@ espacios_participacion_ucla <- function(grupo_df) {
 }
 
 softwares_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_6 <- info_1 <- tipo_producto <- titulo <-
+  info_2 <- pais <- anno <- info_3 <- disponibilidad <- sitio_web <-
+  info_4 <- nombre_comercial <- nombre_proyecto <- info_5 <-
+  institucion_financiadora <- info_7 <- NULL
 
   grupo_df_softwares <-
     grupo_df %>%
@@ -1438,6 +1570,10 @@ softwares_ucla <- function(grupo_df) {
 
 innovaciones_procesos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_4 <- info_1 <- tipo_producto <-
+    titulo <- info_2 <- pais <- ano <- info_3 <- disponibilidad <-
+    info_5 <- NULL
+
   grupo_df_inn_procesos_procedimientos <-
     grupo_df %>%
     filter(categoria == "Innovaciones en Procesos y Procedimientos") %>%
@@ -1465,6 +1601,11 @@ innovaciones_procesos_ucla <- function(grupo_df) {
 }
 
 otros_libros_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_1 <- Tipo_libro <- Titulo <- info_2 <-
+  Pais <- Ano <- ISBN <- Volumen <- Paginas <- Editorial <- info_3 <-
+  info_4 <- Autores <- NULL
+
   grupo_df_otros_libros_publicados<-
     grupo_df %>%
     filter(categoria == "Otros Libros publicados") %>%
@@ -1491,12 +1632,12 @@ otros_libros_ucla <- function(grupo_df) {
            ISBN= str_remove(ISBN, ".*:"),
            ISBN = str_trim(ISBN),
            Volumen = str_extract(info_2,"vol:.*"),
-           Volumen = str_remove(Volumen, "págs:.*"),
+           Volumen = str_remove(Volumen, paste("p",a,"gs:.*", sep = "")),
            Volumen= str_remove(Volumen, "vol:"),
            Volumen=str_trim(Volumen),
-           Paginas= str_extract(info_2,"págs:.*,"),
+           Paginas= str_extract(info_2, paste("p",a,"gs:.*,", sep = "")),
            Paginas= str_remove(Paginas, ",.*"),
-           Paginas= str_remove(Paginas, "págs:"),
+           Paginas= str_remove(Paginas, paste("p",a,"gs:", sep = "")),
            Paginas=str_trim(Paginas),
            Editorial= str_extract(info_2,"Ed.*"),
            Editorial= str_remove(Editorial,"Ed."),
@@ -1511,9 +1652,12 @@ otros_libros_ucla <- function(grupo_df) {
 
 estrategias_comunicacion_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- tipo_producto <-
+    desde <- info_2 <- info_3 <- descripcion <- NULL
+
   grupo_df_estreategias_comunicacion <-
     grupo_df %>%
-    filter(categoria == "Estrategias de Comunicación del Conocimiento") %>%
+    filter(categoria == paste("Estrategias de Comunicaci",o,"n del Conocimiento", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5", "info_6",
                "info_7", "info_8", "info_9", "info_10", "info_11", "info_12",
@@ -1530,7 +1674,7 @@ estrategias_comunicacion_ucla <- function(grupo_df) {
            desde = str_remove(desde, " hasta.*"),
            hata = str_trim(info_2),
            info_3 = str_remove(info_3, "NA.*"),
-           descripcion = str_remove(info_3, ".*Descripción: "),
+           descripcion = str_remove(info_3, paste(".*Descripci",o,"n: ", sep = "")),
            descripcion = str_trim(descripcion)) %>%
     select(-info_1, -info_2, -info_3)
 
@@ -1538,9 +1682,14 @@ estrategias_comunicacion_ucla <- function(grupo_df) {
 
 generacion_contenido_impreso_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_5 <- info_1 <- tipo_producto <-
+    titulo <- info_2 <- fecha <- ambito <- info_3 <- medio_circulacion <-
+    lugar_publicacion <- lugar_publicacion <- info_4 <- info_6 <-
+    autores <- NULL
+
   grupo_df_generacion_cont_impreso <-
     grupo_df %>%
-    filter(categoria == "Generación de Contenido Impreso") %>%
+    filter(categoria == paste("Generaci",o,"n de Contenido Impreso", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5", "info_6"),
              sep = "\r\n" ) %>%
@@ -1571,9 +1720,14 @@ generacion_contenido_impreso_ucla <- function(grupo_df) {
 
 informes_tecnicos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Titulo <- info_2 <-
+    info_3 <- ano <- mes <- idioma <- ciudad <- info_4 <-
+    info_5 <- i_1 <- i_2 <- Num_pag <- i_3 <- Num_contrato <-
+    i_4 <- Institucion_Presta_servicio <- Disponibilidad <- NULL
+
   grupo_df_informes_tecnicos<-
     grupo_df %>%
-    filter(categoria == "Informes técnicos") %>%
+    filter(categoria == paste("Informes t",e,"cnicos", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5"),
              sep = "\r\n" )%>%
@@ -1619,9 +1773,12 @@ informes_tecnicos_ucla <- function(grupo_df) {
 
 participacion_ciudadana_cti_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- titulo <- desde <- info_2 <- info_3 <-
+  descripcion <- NULL
+
   grupo_df_participacion_cti <-
     grupo_df %>%
-    filter(categoria == "Participación Ciudadana en Proyectos de CTI") %>%
+    filter(categoria == paste("Participaci",o,"n Ciudadana en Proyectos de CTI", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5", "info_6","info_7", "info_8", "info_9"),
              sep = "\r\n" ) %>%
@@ -1640,6 +1797,10 @@ participacion_ciudadana_cti_ucla <- function(grupo_df) {
 }
 
 regulaciones_normas_ucla <- function(grupo_df) {
+
+  categoria <- producto <- info_5 <- info_1 <- tipo_producto <- titulo <-
+  info_2 <- pais <- ano <- info_3 <- ambito <- fecha <- info_4 <- objeto <-
+  info_6 <- NULL
 
   grupo_df_regulaciones_normas <-
     grupo_df %>%
@@ -1661,7 +1822,7 @@ regulaciones_normas_ucla <- function(grupo_df) {
            ano = str_remove(ano, ".*, "),
            ambito = str_remove(info_3, ", Fecha.*"),
            ambito = str_remove(ambito, ".*: "),
-           fecha = str_remove(info_3, ".*publicación: "),
+           fecha = str_remove(info_3, paste(".*publicaci",o,"n: ", sep = "")),
            fecha = str_trim(fecha),
            objeto = str_remove(info_4, ".*Objeto: "),
            objeto = str_trim(objeto),
@@ -1672,6 +1833,8 @@ regulaciones_normas_ucla <- function(grupo_df) {
 
 actividades_evaluador_ucla <- function(grupo_df) {
 
+  categoria <- NULL
+
   grupo_df_actividades_evaluador<-
     grupo_df %>%
     filter(categoria == "ACTIVIDADES COMO EVALUADOR")
@@ -1680,33 +1843,42 @@ actividades_evaluador_ucla <- function(grupo_df) {
 
 actividades_formacion_ucla <- function(grupo_df) {
 
+  categoria <- NULL
   grupo_df_actividades_formacion <-
     grupo_df %>%
-    filter(categoria == "ACTIVIDADES DE FORMACIÓN")
+    filter(categoria == paste("ACTIVIDADES DE FORMACI",O,"N", sep = ""))
 
 }
 
 apropiacion_social_conocimiento_ucla <- function(grupo_df) {
 
+  categoria <- NULL
+
   grupo_df_apropiacion_social <-
     grupo_df %>%
-    filter(categoria == "APROPIACIÓN SOCIAL Y CIRCULACIÓN DEL CONOCIMIENTO")
+    filter(categoria == paste("APROPIACI",O,"N SOCIAL Y CIRCULACI",O,"N DEL CONOCIMIENTO", sep = ""))
 
 }
 
 produccion_tecnica_tecnologica_ucla <- function(grupo_df) {
 
+  categoria <- NULL
+
   grupo_df_produccion_tecnica_tecnologica<-
     grupo_df %>%
-    filter(categoria == "PRODUCCIÓN TÉCNICA Y TECNOLÓGICA")
+    filter(categoria == paste("PRODUCCI",O,"N T",E,"CNICA Y TECNOL",O,"GICA", sep = ""))
 
 }
 
 generacion_contenido_audio_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_2 <- info_4 <- info_1 <-
+    tipo_producto <- titulo <- info_3 <- ano <- mes <- info_5 <-
+    formato_archivo_digital <- NULL
+
   grupo_df_generacion_audio <-
     grupo_df %>%
-    filter(categoria == "Generaciónes de contenido de audio") %>%
+    filter(categoria == paste("Generaci",o,"nes de contenido de audio")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5"),
              sep = "\r\n" ) %>%
@@ -1731,9 +1903,14 @@ generacion_contenido_audio_ucla <- function(grupo_df) {
 
 conceptos_tecnicos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_2 <- info_4 <- info_1 <-
+    tipo_producto <- Titulo <- info_3 <- ano_solicitud <-
+    mes_solicitud <- info_5 <- institucion_solicitante <-
+    ciudad <- NULL
+
   grupo_df_conceptos_tecnicos <-
     grupo_df %>%
-    filter(categoria == "Conceptos técnicos") %>%
+    filter(categoria == paste("Conceptos t",e,"cnicos", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5"),
              sep = "\r\n" ) %>%
@@ -1749,10 +1926,10 @@ conceptos_tecnicos_ucla <- function(grupo_df) {
            ano_solicitud = str_trim(ano_solicitud),
            mes_solicitud = str_remove(info_3, ", Fecha.*"),
            mes_solicitud = str_remove(mes_solicitud, ".*: "),
-           fecha_envio = str_remove(info_3, ".*envío: "),
+           fecha_envio = str_remove(info_3, paste(".*env",i,"o: ", sep = "")),
            institucion_solicitante = str_remove(info_5, ", Ciudad.*"),
            institucion_solicitante = str_remove(institucion_solicitante, ".*solicitante: "),
-           ciudad = str_remove(info_5, ", Número.*"),
+           ciudad = str_remove(info_5, paste(", N",u,"mero.*", sep = "")),
            ciudad = str_remove(ciudad, ".*Ciudad: "),
            numero_cosecutivo_concepto = str_remove(info_5, ".*concepto: ")) %>%
     select(-info_1, -info_3, -info_5)
@@ -1761,9 +1938,13 @@ conceptos_tecnicos_ucla <- function(grupo_df) {
 
 reglamentos_tecnicos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Titulo <- info_2 <- Ano <- Sitio_Web <-
+  info_3 <- Disponibilidad <- Sitio_web <- info_4 <- Institucion_Financiadora<-
+  info_5 <- info_6 <- Autores <- NULL
+
   grupo_df_reglamentos_tecnicos <-
     grupo_df %>%
-    filter(categoria == "Reglamentos técnicos") %>%
+    filter(categoria == paste("Reglamentos t",e,"cnicos", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2", "info_3", "info_4", "info_5","info_6"),
              sep = "\r\n" ) %>%
@@ -1799,9 +1980,14 @@ reglamentos_tecnicos_ucla <- function(grupo_df) {
 
 otros_productos_tencologicos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Titulo <- info_2 <- info_3 <- Ano <-
+  Disponibilidad <- Nombre_comercial <- info_4 <- Institucion_Financiadora <-
+  info_5 <- info_6 <- Autores <- NULL
+
+
   grupo_df_otros_productos_tecnologicos<-
     grupo_df %>%
-    filter(categoria == "Otros productos tecnológicos") %>%
+    filter(categoria == paste("Otros productos tecnol",o,"gicos", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6"),
              sep = "\r\n" )%>%
@@ -1838,6 +2024,11 @@ otros_productos_tencologicos_ucla <- function(grupo_df) {
 
 traducciones_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_8 <- info_1 <- tipo_producto <- info_2 <-
+  ano <- revista <- info_3 <- ISSN <- libro <- info_4 <- ISBN <- info_5 <-
+  idioma_documento_original <- info_6 <- edicion <- serie <- info_7 <-
+  info_9 <- NULL
+
   grupo_df_traducciones <-
     grupo_df %>%
     filter(categoria == "Traducciones") %>%
@@ -1860,10 +2051,10 @@ traducciones_ucla <- function(grupo_df) {
            libro = str_remove(libro, " ISBN.*"),
            ISBN = str_remove(info_4, ", Medio.*"),
            ISBN = str_trim(ISBN),
-           medio_divulgacion = str_remove(info_4, ".*ción: "),
+           medio_divulgacion = str_remove(info_4, paste(".*ci",o,"n: ", sep = "")),
            idioma_documento_original = str_remove(info_5, ",.*"),
            idioma_documento_original = str_remove(idioma_documento_original, ".*: "),
-           idioma_traduccion = str_remove(info_5, ".*ción: "),
+           idioma_traduccion = str_remove(info_5, paste(".*ci",o,"n: ", sep = "")),
            edicion = str_remove(info_6, ", Serie.*"),
            edicion = str_remove(edicion, ".*: "),
            serie = str_remove(info_6, ".*Serie: "),
@@ -1876,6 +2067,10 @@ traducciones_ucla <- function(grupo_df) {
 }
 
 signos_distintivos_ucla <- function(grupo_df){
+
+  categoria <- producto <- info_1 <- tipo_producto <- Titulo <-
+  info_2 <- pais <- ano <- info_3 <- numero_registro <- NULL
+
 
   grupo_df_signos_distintivos <-
     grupo_df %>%
@@ -1902,9 +2097,14 @@ signos_distintivos_ucla <- function(grupo_df){
 
 nuevos_registros_cientificos_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- Titulo <- info_2 <- info_3 <- Ano <-
+  Mes <- Ciudad <- info_4 <- info_5 <- Base_de_Datos <- Sitio_web <-
+  Institucion <- info_6 <- info_7 <- Instituccion_certificadora <-
+  Descripcion_registro <- info_8 <- info_9 <- Descripcion <- NULL
+
   grupo_df_nuevos_registros_cientificos<-
     grupo_df %>%
-    filter(categoria == "Nuevos registros científicos") %>%
+    filter(categoria == paste("Nuevos registros cient",i,"ficos", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7","info_8","info_9"),
              sep = "\r\n" )%>%
@@ -1962,19 +2162,23 @@ nuevos_registros_cientificos_ucla <- function(grupo_df) {
 
 libros_divulgacion_compilacion_ucla <- function(grupo_df) {
 
+  producto <- info_6 <- info_1 <- tipo_producto1 <- tipo_producto <-
+  titulo <- info_2 <- pais <- info_3 <- ano <- info_4 <- ISBN <- categoria <-
+  info_5 <- editorial <- info_7 <- autores <- NULL
+
   grupo_df_libros_divulgacion_compilacion<-
     grupo_df %>%
-    filter(categoria == "Libros de divulgación y/o Compilación de divulgación") %>%
+    filter(categoria == paste("Libros de divulgaci",o,"n y/o Compilaci",o,"n de divulgaci",o,"n", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4",
                "info_5","info_6","info_7"),
              sep = "\r\n" ) |>
     select(-info_6) |>
     mutate(tipo_producto1 = str_remove(info_1, ".*.- "),
-           tipo_producto = str_extract(tipo_producto1, ".*divulgación :"),
+           tipo_producto = str_extract(tipo_producto1, paste(".*divulgaci",o,"n :", sep = "")),
            tipo_producto = str_remove(tipo_producto, ":"),
            tipo_producto = str_trim(tipo_producto),
-           titulo = str_remove(tipo_producto1, ".*divulgación :"),
+           titulo = str_remove(tipo_producto1, paste(".*divulgaci",o,"n :", sep = "")),
            titulo = str_trim(titulo),
            pais = str_remove(info_2, ","),
            pais = str_trim(pais),
@@ -1994,19 +2198,23 @@ libros_divulgacion_compilacion_ucla <- function(grupo_df) {
 
 libros_formacion_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_6 <- info_1 <- tipo_producto <-
+  titulo <- info_2 <- pais <- info_3 <- ano <- info_4 <- ISBN <- editorial <-
+  info_5 <- info_7 <- autores <- NULL
+
   grupo_df_libros_formacion<-
     grupo_df %>%
-    filter(categoria == "Libros de formación") %>%
+    filter(categoria == paste("Libros de formaci",o,"n", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4",
                "info_5","info_6","info_7"),
              sep = "\r\n" ) |>
     select(-info_6) |>
-    mutate(tipo_producto = str_extract(info_1, ".*formación : "),
+    mutate(tipo_producto = str_extract(info_1, paste(".*formaci",o,"n : ", sep = "")),
            tipo_producto = str_remove(tipo_producto, ":"),
            tipo_producto = str_remove(tipo_producto, ".*.- "),
            tipo_producto = str_trim(tipo_producto),
-           titulo = str_remove(info_1, ".*formación :"),
+           titulo = str_remove(info_1, paste(".*formaci",o,"n :", sep = "")),
            titulo = str_trim(titulo),
            pais = str_remove(info_2, ","),
            pais = str_trim(pais),
@@ -2025,6 +2233,11 @@ libros_formacion_ucla <- function(grupo_df) {
 
 producciones_digital_audiovisual_ucla <- function(grupo_df){
 
+  categoria <- producto <- info_1 <- tipo_producto <- titulo_producto <-
+  info_3 <- ano <- mes <- verificacion <- info_5 <- publico_objetivo <-
+  cuidad <- genero_literario <- tipo <- info_6 <- nombre_proyecto <-
+  tipo_circulacion <- info_7 <- info_8 <- info_2 <- info_4 <- NULL
+
   grupo_df_producciones_digital_audiovisual <-
     grupo_df %>%
     filter(categoria == "Producciones de contenido digital - Audiovisual") %>%
@@ -2032,11 +2245,11 @@ producciones_digital_audiovisual_ucla <- function(grupo_df){
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7","info_8"),
              sep = "\r\n" ) |>
     mutate(tipo_producto = str_remove(info_1, "\\d. "),
-           tipo_producto = str_extract(tipo_producto, ".*Recurso gráfico\\)"),
+           tipo_producto = str_extract(tipo_producto, paste(".*Recurso gr",a,"fico\\)", sep = "")),
            tipo_producto = str_trim(tipo_producto),
            titulo_producto = str_remove(info_1, ".*\\) "),
            titulo_producto = str_trim(titulo_producto),
-           ano = str_remove(info_3, ".*Año: "),
+           ano = str_remove(info_3, paste(".*A",n,"o: ", sep = "")),
            ano = str_remove(ano, ",.*"),
            ano = str_trim(ano),
            mes = str_remove(info_3, ".*Mes: "),
@@ -2058,7 +2271,7 @@ producciones_digital_audiovisual_ucla <- function(grupo_df){
            nombre_proyecto = str_remove(info_6, ".*proyecto: "),
            nombre_proyecto = str_remove(nombre_proyecto, ",.*"),
            nombre_proyecto = str_trim(nombre_proyecto),
-           tipo_circulacion = str_remove(info_6, ".*circulación: "),
+           tipo_circulacion = str_remove(info_6, paste(".*circulaci",o,"n: ", sep = "")),
            tipo_circulacion = str_trim(tipo_circulacion),
            duracion = str_remove(info_7, ".*: ,"),
            enfoque_diferencial = str_remove(info_8, ".*:")) |>
@@ -2068,18 +2281,25 @@ producciones_digital_audiovisual_ucla <- function(grupo_df){
 
 Producciones_de_contenido_digital_ucla <- function(grupo_df){
 
+  categoria <- producto <- info_1 <- tipo_producto <-
+    info_3 <- ano <- mes <- verificacion <-
+    info_5 <- publico_objetivo <- ciudad <- genero_literario <-
+    tipo <- info_6 <- nombre_proyecto <-
+    tipo_circulacion <- info_7 <- info_8 <- info_2 <-
+    info_4 <- titulo_producto <- NULL
+
   grupo_df_producciones_de_contenido_digital <-
     grupo_df %>%
-    filter(categoria == "Producciones de contenido digital - Recursos gráficos") %>%
+    filter(categoria == paste("Producciones de contenido digital - Recursos gr",a,"ficos", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7","info_8"),
              sep = "\r\n" ) |>
     mutate(tipo_producto = str_remove(info_1, "\\d. "),
-           tipo_producto = str_extract(tipo_producto, ".*Recurso gráfico\\)"),
+           tipo_producto = str_extract(tipo_producto, paste(".*Recurso gr",a,"fico\\)", sep = "")),
            tipo_producto = str_trim(tipo_producto),
            titulo_producto = str_remove(info_1, ".*\\) "),
            titulo_producto = str_trim(titulo_producto),
-           ano = str_remove(info_3, ".*Año: "),
+           ano = str_remove(info_3, paste(".*A",n,"o: ", sep = "")),
            ano = str_remove(ano, ",.*"),
            ano = str_trim(ano),
            mes = str_remove(info_3, ".*Mes: "),
@@ -2090,9 +2310,9 @@ Producciones_de_contenido_digital_ucla <- function(grupo_df){
            publico_objetivo = str_remove(info_5, ".*objetivo: "),
            publico_objetivo = str_remove(publico_objetivo, ",.*"),
            publico_objetivo = str_trim(publico_objetivo),
-           cuidad = str_remove(info_5, ".*Ciudad: "),
-           cuidad = str_remove(cuidad, ",.*"),
-           cuidad = str_trim(cuidad),
+           ciudad = str_remove(info_5, ".*Ciudad: "),
+           ciudad = str_remove(ciudad, ",.*"),
+           ciudad = str_trim(ciudad),
            genero_literario = str_remove(info_5, ".*literario: "),
            genero_literario = str_remove(genero_literario, ",.*"),
            genero_literario = str_trim(genero_literario),
@@ -2101,7 +2321,7 @@ Producciones_de_contenido_digital_ucla <- function(grupo_df){
            nombre_proyecto = str_remove(info_6, ".*proyecto: "),
            nombre_proyecto = str_remove(nombre_proyecto, ",.*"),
            nombre_proyecto = str_trim(nombre_proyecto),
-           tipo_circulacion = str_remove(info_6, ".*circulación: "),
+           tipo_circulacion = str_remove(info_6, paste(".*circulaci",o,"n: ", sep = "")),
            tipo_circulacion = str_trim(tipo_circulacion),
            duracion = str_remove(info_7, ".*: ,"),
            enfoque_diferencial = str_remove(info_8, ".*:")) |>
@@ -2111,14 +2331,19 @@ Producciones_de_contenido_digital_ucla <- function(grupo_df){
 
 notas_cientificas_ucla <- function(grupo_df){
 
+  categoria <- producto <- info_1 <- nota_cientifica <- info_3 <- revista <-
+  info_5 <- info_8 <- pagina_inicial <- info_10 <- ano <- sitio_web <- mes <-
+  info_12 <- volumen <- info_2 <- info_4 <- info_6 <- info_7 <- info_9 <-
+  info_11 <- NULL
+
   grupo_df_notas_cientificas <-
     grupo_df %>%
-    filter(categoria == "Notas científicas") %>%
+    filter(categoria == paste("Notas cient",i,"ficas", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4","info_5","info_6","info_7","info_8", "info_9"
                , "info_10", "info_11", "info_12"),
              sep = "\r\n" ) |>
-    mutate(nota_cientifica = str_remove(info_1, ".*científica: "),
+    mutate(nota_cientifica = str_remove(info_1, paste(".*cient",i,"fica: ", sep = "")),
            nota_cientifica = str_trim(nota_cientifica),
            revista = str_remove(info_3, ".*Revista: "),
            revista = str_remove(revista, ",.*"),
@@ -2127,7 +2352,7 @@ notas_cientificas_ucla <- function(grupo_df){
            pagina_inicial = str_remove(info_8, ".*inicial: "),
            pagina_inicial = str_remove(pagina_inicial, ",.*"),
            pagina_final= str_remove(info_8, ".*final: "),
-           ano = str_remove(info_10, ".*Año: "),
+           ano = str_remove(info_10, paste(".*A",n,"o: ", sep = "")),
            ano = str_remove(ano, ",.*"),
            mes = str_remove(info_10, ".*Mes: "),
            sitio_web = str_extract(info_10, "https.*"),
@@ -2141,9 +2366,13 @@ notas_cientificas_ucla <- function(grupo_df){
 
 manuales_guias_especializadas_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- tipo_producto <- titulo <-
+  info_2 <- pais <- info_3 <- ano <- info_4 <- ISBN <- info_5 <-
+  editorial <- info_7 <- autores <- info_6 <- NULL
+
   grupo_df_manuales_guias_especializadas <-
     grupo_df %>%
-    filter(categoria == "Manuales y Guías Especializadas") %>%
+    filter(categoria == paste("Manuales y Gu",i,"as Especializadas", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4",
                "info_5","info_6","info_7"),
@@ -2171,9 +2400,14 @@ manuales_guias_especializadas_ucla <- function(grupo_df) {
 
 divulgacion_publica_contenidos_transmedia_ucla <- function(grupo_df) {
 
+  categoria <- producto <- info_1 <- tipo_producto <- titulo <- info_3 <-
+    ano <- mes <- verificacion <- info_5 <- publico_objetivo <-
+    cuidad <- genero_literario <- info_6 <- nombre_proyecto <-
+    tipo_circulacion <- info_7 <- info_2 <- info_4 <- NULL
+
   grupo_df_divulgacion_publica_contenidos_transmedia <-
     grupo_df %>%
-    filter(categoria == "Divulgación Pública de la Ciencia producción de estrategias y contenidos transmedia") %>%
+    filter(categoria == paste("Divulgaci",o,"n P",u,"blica de la Ciencia producci",o,"n de estrategias y contenidos transmedia", sep = "")) %>%
     separate(producto ,
              c("info_1", "info_2","info_3","info_4",
                "info_5","info_6","info_7"),
@@ -2182,7 +2416,7 @@ divulgacion_publica_contenidos_transmedia_ucla <- function(grupo_df) {
            tipo_producto = str_remove(tipo_producto, ".*\\d. "),
            titulo = str_remove(info_1, ".*transmedia"),
            titulo = str_trim(titulo),
-           ano = str_remove(info_3, ".*Año: "),
+           ano = str_remove(info_3, paste(".*A",n,"o: ", sep = "")),
            ano = str_remove(ano, ",.*"),
            ano = str_trim(ano),
            mes = str_remove(info_3, ".*Mes: "),
@@ -2202,7 +2436,7 @@ divulgacion_publica_contenidos_transmedia_ucla <- function(grupo_df) {
            nombre_proyecto = str_remove(info_6, ".*proyecto: "),
            nombre_proyecto = str_remove(nombre_proyecto, ",.*"),
            nombre_proyecto = str_trim(nombre_proyecto),
-           tipo_circulacion = str_remove(info_6, ".*circulación: "),
+           tipo_circulacion = str_remove(info_6, paste(".*circulaci",o,"n: ", sep = "")),
            tipo_circulacion = str_trim(tipo_circulacion),
            enfoque_diferencial = str_remove(info_7, ".*:")) |>
     select(-info_1, -info_2,-info_3,-info_4,
@@ -2370,12 +2604,15 @@ divulgacion_publica_contenidos_transmedia_ucla <- function(grupo_df) {
 
 get_posgrade_clasficitation_cvlac <- function(cvlac_url) {
 
+  X1 <- X5 <- X7 <- X9 <- value <- rowname <- posgrade <-
+    Month <- ranking <- X2 <- clasification <- NULL
+
   cvlac_df = read_html(cvlac_url) |>
     html_table()
 
   cvlac_posgrade = cvlac_df[[1]] |>
     filter(str_detect(string = X1,
-                      pattern = "Formación Académica")) |>
+                      pattern = paste("Formaci",o,"n Acad",e,"mica", sep = ""))) |>
     select(X5, X7, X9) |>
     slice(1) |>
     separate_rows(X5, sep = "\r\n") |> # X5
@@ -2403,8 +2640,8 @@ get_posgrade_clasficitation_cvlac <- function(cvlac_url) {
     separate(duration, sep = " - ", into = c("start", "end")) |>
     filter(end != "de") |> # Removing not ending postgrades
     filter(posgrade %in% c("Doctorado",
-                           "Maestría/Magister",
-                           "Especialización",
+                           paste("Maestr",i,"a/Magister", sep = ""),
+                           paste("Especializaci",o,"n", sep = ""),
                            "Pregrado/Universitario")) |>
     separate(end, into = c("Month", "year"), sep = " ") |>
     mutate(Month = if_else(Month == "de", "Enero", Month)) |>
@@ -2413,8 +2650,8 @@ get_posgrade_clasficitation_cvlac <- function(cvlac_url) {
            end = parse_date(end, "%B %Y", locale = locale("es"))) |>
     filter(end <= today()) |>
     mutate(ranking = if_else(posgrade == "Doctorado", 3,
-                             if_else(posgrade == "Maestría/Magister", 2,
-                                     if_else(posgrade == "Especialización", 1,
+                             if_else(posgrade == paste("Maestr",i,"a/Magister", sep = ""), 2,
+                                     if_else(posgrade == paste("Especializaci",o,"n", sep = ""), 1,
                                              0)
                                      )
                              )
@@ -2426,12 +2663,12 @@ get_posgrade_clasficitation_cvlac <- function(cvlac_url) {
   if (is_empty(cvlac_posgrade$posgrade)) {
 
     cvlac_posgrade <-
-      tibble(posgrade = "Técnico")
+      tibble(posgrade = paste("T",e,"cnico", sep = ""))
 
   }
 
   cvlac_category <- cvlac_df[[1]] |>
-    filter(X1 == "Categoría") |>
+    filter(X1 == paste("Categor",i,"a", sep = "")) |>
     select(X2)
 
   if (is_empty(cvlac_category$X2)) {
@@ -2489,6 +2726,7 @@ make_general_grupos <- function(produccion_actualizada){
   #   left_join(group_production, by = "grupo") #<--- Datos elevados
 
   ## Revisar cantidad de articulos (esta treayendo mas del timepo 2016/20)
+  grupo <- ano <- NULL
 
   general_grupos <- produccion_actualizada[[2]][["articulos"]] |>
     select(grupo, ano) |>
@@ -2501,6 +2739,9 @@ make_general_grupos <- function(produccion_actualizada){
 }
 
 count_articles_researcher <- function(produccion_actualizada) {
+
+  grupo <- integrantes <- ano <- autores <- count_papers <-
+    NULL
 
   # Count production of each group of active researchers
   ## Identify active researchers with the group
@@ -2555,125 +2796,208 @@ count_articles_researcher <- function(produccion_actualizada) {
 
 researcher_product <- function(produccion_actualizada){
 
-  articulos_author <-
-    produccion_actualizada[[2]][["articulos"]] |>
-    separate_rows(autores, sep = ", ") |>
-    right_join(produccion_actualizada[[3]] |>
-                 separate_rows(grupo, sep = "; "),
-               by = c("grupo" = "grupo",
-                      "autores" = "integrantes")) |>
-    filter(!is.na(titulo)) |>
-    group_by(grupo, autores) |>
-    select(grupo, autores, titulo) |>
-    unique() |>
-    select(grupo, autores) |>
-    count(autores) |>
-    group_by(autores) |>
-    mutate(grupo = paste0(grupo, collapse = "; "),
-           n = paste0(n, collapse = "; ")) |>
-    unique() |>
-    rename(articulos = n) |>
-    separate_rows(c(grupo,articulos), sep = "; ")
+  autores <- grupo <- titulo <- articulos <- titulo_capitulo <-
+  capitulos <- Autores <- Titulo <- libros <- softwares <-
+  innovaciones <- tutor_coautor <- trabajos_dirigidos <-
+  integrantes <- horas_dedicacion <- NULL
 
-  capitulos_author <-
-    produccion_actualizada[[2]][["capitulos"]] |>
-    separate_rows(autores, sep = ", ") |>
-    right_join(produccion_actualizada[[3]] |>
-                 separate_rows(grupo, sep = "; "),
-               by = c("grupo" = "grupo",
-                      "autores" = "integrantes")) |>
-    filter(!is.na(titulo_capitulo)) |>
-    group_by(grupo, autores) |>
-    select(grupo, autores, titulo_capitulo) |>
-    unique() |>
-    select(grupo, autores) |>
-    count(autores) |>
-    group_by(autores) |>
-    mutate(grupo = paste0(grupo, collapse = "; "),
-           n = paste0(n, collapse = "; ")) |>
-    unique() |>
-    rename(capitulos = n)|>
-    separate_rows(c(grupo,capitulos), sep = "; ")
+  if(dim(produccion_actualizada[[2]][["articulos"]])[1] == 0){
+    articulos_author <- tibble(grupo="NA",
+                               autores="NA",
+                               articulos="NA")
+  }else{
 
-  libros_author <-
-    produccion_actualizada[[2]][["libros"]] |>
-    separate_rows(Autores, sep = ", ") |>
-    right_join(produccion_actualizada[[3]] |>
-                 separate_rows(grupo, sep = "; "),
-               by = c("grupo" = "grupo",
-                      "Autores" = "integrantes")) |>
-    filter(!is.na(Titulo)) |>
-    group_by(grupo, Autores) |>
-    select(grupo, Autores, Titulo) |>
-    unique() |>
-    select(grupo, Autores) |>
-    count(Autores) |>
-    group_by(Autores) |>
-    mutate(grupo = paste0(grupo, collapse = "; "),
-           n = paste0(n, collapse = "; ")) |>
-    unique() |>
-    rename(libros = n)|>
-    separate_rows(c(grupo,libros), sep = "; ")
+    articulos_author <-
+      produccion_actualizada[[2]][["articulos"]] |>
+      separate_rows(autores, sep = ", ") |>
+      right_join(produccion_actualizada[[3]] |>
+                   separate_rows(grupo, sep = "; "),
+                 by = c("grupo" = "grupo",
+                        "autores" = "integrantes")) |>
+      filter(!is.na(titulo)) |>
+      group_by(grupo, autores) |>
+      select(grupo, autores, titulo) |>
+      unique() |>
+      select(grupo, autores) |>
+      count(autores) |>
+      group_by(autores) |>
+      mutate(grupo = paste0(grupo, collapse = "; "),
+             n = paste0(n, collapse = "; ")) |>
+      unique() |>
+      rename(articulos = n) |>
+      separate_rows(c(grupo,articulos), sep = "; ")
 
-  software_author <-
-    produccion_actualizada[[2]][["softwares"]] |>
-    separate_rows(autores, sep = ", ") |>
-    right_join(produccion_actualizada[[3]] |>
-                 separate_rows(grupo, sep = "; "),
-               by = c("grupo" = "grupo",
-                      "autores" = "integrantes")) |>
-    filter(!is.na(titulo)) |>
-    group_by(grupo, autores) |>
-    select(grupo, autores, titulo) |>
-    unique() |>
-    select(grupo, autores) |>
-    count(autores) |>
-    group_by(autores) |>
-    mutate(grupo = paste0(grupo, collapse = "; "),
-           n = paste0(n, collapse = "; ")) |>
-    unique() |>
-    rename(softwares = n) |>
-    separate_rows(c(grupo, softwares), sep = "; ")
+    if(dim(articulos_author)[1] == 0){
+      articulos_author <- tibble(grupo = "NA",
+                                    autores = "NA",
+                                    articulos ="NA")
+    }
+  }
 
-  innovaciones_author <-
-    produccion_actualizada[[2]][["innovaciones_gestion"]] |>
-    separate_rows(autores, sep = ", ") |>
-    right_join(produccion_actualizada[[3]] |>
-                 separate_rows(grupo, sep = "; "),
-               by = c("grupo" = "grupo",
-                      "autores" = "integrantes")) |>
-    filter(!is.na(titulo)) |>
-    group_by(grupo, autores) |>
-    select(grupo, autores, titulo) |>
-    unique() |>
-    select(grupo, autores) |>
-    count(autores) |>
-    group_by(autores) |>
-    mutate(grupo = paste0(grupo, collapse = "; "),
-           n = paste0(n, collapse = "; ")) |>
-    unique() |>
-    rename(innovaciones = n) |>
-    separate_rows(c(grupo, innovaciones), sep = "; ")
+  if(dim(produccion_actualizada[[2]][["capitulos"]])[1] == 0){
+    capitulos_author <- tibble(grupo="NA",
+                               autores="NA",
+                               capitulos="NA")
+  }else{
 
-  trabajos_dirigidos_author <-
-    produccion_actualizada[[2]][["trabajos_dirigidos"]] |>
-    separate_rows(tutor_coautor, sep = ", ") |>
-    right_join(produccion_actualizada[[3]] |>
-                 separate_rows(grupo, sep = "; "),
-               by = c("grupo" = "grupo",
-                      "tutor_coautor" = "integrantes")) |>
-    filter(!is.na(titulo)) |>
-    group_by(grupo, tutor_coautor) |>
-    select(grupo, tutor_coautor, titulo) |>
-    unique() |>
-    select(grupo, tutor_coautor) |>
-    count(tutor_coautor) |>
-    group_by(tutor_coautor) |>
-    mutate(grupo = paste0(grupo, collapse = "; "),
-           n = paste0(n, collapse = "; ")) |>
-    unique() |>
-    rename(trabajos_dirigidos = n) |>
-    separate_rows(c(grupo, trabajos_dirigidos), sep = "; ")
+    capitulos_author <-
+      produccion_actualizada[[2]][["capitulos"]] |>
+      separate_rows(autores, sep = ", ") |>
+      right_join(produccion_actualizada[[3]] |>
+                   separate_rows(grupo, sep = "; "),
+                 by = c("grupo" = "grupo",
+                        "autores" = "integrantes")) |>
+      filter(!is.na(titulo_capitulo)) |>
+      group_by(grupo, autores) |>
+      select(grupo, autores, titulo_capitulo) |>
+      unique() |>
+      select(grupo, autores) |>
+      count(autores) |>
+      group_by(autores) |>
+      mutate(grupo = paste0(grupo, collapse = "; "),
+             n = paste0(n, collapse = "; ")) |>
+      unique() |>
+      rename(capitulos = n)|>
+      separate_rows(c(grupo,capitulos), sep = "; ")
+
+    if(dim(capitulos_author)[1] == 0){
+      capitulos_author <- tibble(grupo = "NA",
+                                    autores = "NA",
+                                    capitulos ="NA")
+    }
+  }
+
+  if(dim(produccion_actualizada[[2]][["libros"]])[1] == 0){
+    libros_author <- tibble(grupo="NA",
+                            Autores="NA",
+                            libros="NA")
+  }else{
+
+    libros_author <-
+      produccion_actualizada[[2]][["libros"]] |>
+      separate_rows(Autores, sep = ", ") |>
+      right_join(produccion_actualizada[[3]] |>
+                   separate_rows(grupo, sep = "; "),
+                 by = c("grupo" = "grupo",
+                        "Autores" = "integrantes")) |>
+      filter(!is.na(Titulo)) |>
+      group_by(grupo, Autores) |>
+      select(grupo, Autores, Titulo) |>
+      unique() |>
+      select(grupo, Autores) |>
+      count(Autores) |>
+      group_by(Autores) |>
+      mutate(grupo = paste0(grupo, collapse = "; "),
+             n = paste0(n, collapse = "; ")) |>
+      unique() |>
+      rename(libros = n)|>
+      separate_rows(c(grupo,libros), sep = "; ")
+
+    if(dim(libros_author)[1] == 0){
+      libros_author <- tibble(grupo = "NA",
+                                 autores = "NA",
+                                 libros ="NA")
+    }
+  }
+
+  if(dim(produccion_actualizada[[2]][["softwares"]])[1] == 0){
+    software_author <- tibble(grupo="NA",
+                              autores="NA",
+                              softwares="NA")
+  }else{
+
+    software_author <-
+      produccion_actualizada[[2]][["softwares"]] |>
+      separate_rows(autores, sep = ", ") |>
+      right_join(produccion_actualizada[[3]] |>
+                   separate_rows(grupo, sep = "; "),
+                 by = c("grupo" = "grupo",
+                        "autores" = "integrantes")) |>
+      filter(!is.na(titulo)) |>
+      group_by(grupo, autores) |>
+      select(grupo, autores, titulo) |>
+      unique() |>
+      select(grupo, autores) |>
+      count(autores) |>
+      group_by(autores) |>
+      mutate(grupo = paste0(grupo, collapse = "; "),
+             n = paste0(n, collapse = "; ")) |>
+      unique() |>
+      rename(softwares = n) |>
+      separate_rows(c(grupo, softwares), sep = "; ")
+
+    if(dim(software_author)[1] == 0){
+      software_author <- tibble(grupo = "NA",
+                              autores = "NA",
+                              softwares ="NA")
+    }
+  }
+
+  if(dim(produccion_actualizada[[2]][["innovaciones_gestion"]])[1] == 0){
+    innovaciones_author <- tibble(grupo = "NA",
+                                  autores = "NA",
+                                  innovaciones ="NA")
+  }else{
+
+    innovaciones_author <-
+      produccion_actualizada[[2]][["innovaciones_gestion"]] |>
+      separate_rows(autores, sep = ", ") |>
+      right_join(produccion_actualizada[[3]] |>
+                   separate_rows(grupo, sep = "; "),
+                 by = c("grupo" = "grupo",
+                        "autores" = "integrantes")) |>
+      filter(!is.na(titulo)) |>
+      group_by(grupo, autores) |>
+      select(grupo, autores, titulo) |>
+      unique() |>
+      select(grupo, autores) |>
+      count(autores) |>
+      group_by(autores) |>
+      mutate(grupo = paste0(grupo, collapse = "; "),
+             n = paste0(n, collapse = "; ")) |>
+      unique() |>
+      rename(innovaciones = n) |>
+      separate_rows(c(grupo, innovaciones), sep = "; ")
+
+    if(dim(innovaciones_author)[1] == 0){
+      innovaciones_author <- tibble(grupo = "NA",
+                                    autores = "NA",
+                                    innovaciones ="NA")
+    }
+  }
+
+  if(dim(produccion_actualizada[[2]][["trabajos_dirigidos"]])[1] == 0){
+    trabajos_dirigidos_author <- tibble(grupo="NA",
+                                        tutor_coautor="NA",
+                                        trabajos_dirigidos="NA")
+  }else{
+
+    trabajos_dirigidos_author <-
+      produccion_actualizada[[2]][["trabajos_dirigidos"]] |>
+      separate_rows(tutor_coautor, sep = ", ") |>
+      right_join(produccion_actualizada[[3]] |>
+                   separate_rows(grupo, sep = "; "),
+                 by = c("grupo" = "grupo",
+                        "tutor_coautor" = "integrantes")) |>
+      filter(!is.na(titulo)) |>
+      group_by(grupo, tutor_coautor) |>
+      select(grupo, tutor_coautor, titulo) |>
+      unique() |>
+      select(grupo, tutor_coautor) |>
+      count(tutor_coautor) |>
+      group_by(tutor_coautor) |>
+      mutate(grupo = paste0(grupo, collapse = "; "),
+             n = paste0(n, collapse = "; ")) |>
+      unique() |>
+      rename(trabajos_dirigidos = n) |>
+      separate_rows(c(grupo, trabajos_dirigidos), sep = "; ")
+
+    if(dim(trabajos_dirigidos_author)[1] == 0){
+      trabajos_dirigidos_author <- tibble(grupo = "NA",
+                                    autores = "NA",
+                                    trabajos_dirigidos ="NA")
+    }
+  }
 
   researcher_general <-
     produccion_actualizada[[3]] |>
@@ -2697,12 +3021,12 @@ researcher_product <- function(produccion_actualizada){
     left_join(trabajos_dirigidos_author,
               by = c("integrantes" = "tutor_coautor",
                      "grupo" = "grupo")) |>
-    mutate(articulos = replace_na(articulos, 0),
-           capitulos = replace_na(capitulos, 0),
-           libros = replace_na(libros, 0),
-           softwares = replace_na(softwares, 0),
-           trabajos_dirigidos = replace_na(trabajos_dirigidos,0),
-           innovaciones = replace_na(innovaciones, 0)) |>
+    mutate(articulos = replace_na(articulos, "0"),
+           capitulos = replace_na(capitulos, "0"),
+           libros = replace_na(libros, "0"),
+           softwares = replace_na(softwares, "0"),
+           trabajos_dirigidos = replace_na(trabajos_dirigidos,"0"),
+           innovaciones = replace_na(innovaciones, "0")) |>
     group_by(integrantes) |>
     mutate(grupo = paste0(grupo, collapse = "; "),
            articulos = paste0(articulos, collapse = "; "),

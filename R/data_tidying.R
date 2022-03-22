@@ -1,9 +1,7 @@
-# library(tidyverse)
-# library(here)
-# library(gt)
-# library(treemapify)
-# library(kableExtra)
-# library(stringi)
+library(tidyverse)
+library(treemapify)
+#library(kableExtra)
+library(stringi)
 library(tidytext)
 library(SnowballC)
 library(widyr)
@@ -12,6 +10,9 @@ library(igraph)
 # Finding similarities per group
 
 data_tidying <- function(produccion_grupos, grupos) {
+
+  grupo <- id <- titulo <- words <- similarity <- V2 <-
+    NULL
 
   df <- tibble(id = numeric())
 
