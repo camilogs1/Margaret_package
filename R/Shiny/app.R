@@ -12,11 +12,11 @@ library(shinydashboard)
 library(writexl)
 library(margaret)
 #-----------------------------------------------------------------------------------------------------#
-grupos = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\UCLA.csv", header=T, sep=",")
-inves_UCLA = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\inves.csv", header=T, sep=",")
-#inves_UCLA = read.csv("C:\\Users\\User\\Downloads\\Inves.csv", header=T, sep=",")
+#grupos = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\UCLA.csv", header=T, sep=",")
+#inves_UCLA = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\inves.csv", header=T, sep=",")
+UCLA = read.csv("C:\\Users\\User\\Downloads\\UCLA.csv", header=T, sep=",")
 
-margaret = getting_data(grupos)
+margaret = getting_data(UCLA)
  #-----------------------------------------------------------------------------------------------------#
 #articulos_unicos_2016_2020 <-
 #  margaret <- margaret[["articulos"]]
@@ -227,9 +227,6 @@ sidebar <- dashboardSidebar(
              menuSubItem("Evolución temporal", tabName = "evolu_articulos"),
              menuSubItem("Formación investigadores", tabName = "forma_inves")
     ),
-    menuItem("Rpubs", icon = icon("file-code-o"),
-             href = "https://rpubs.com/srobledog/margaret"
-    ),
     #download
     menuItem("Descargar",icon = icon("fas fa-download"), downloadButton("download", "Download full results"))
   ),
@@ -328,7 +325,11 @@ server <- function(input, output) {
 
   filtro_fecha_max <- reactive({input$fechas_input[2]})
 
-  data <- margaret
+  margaret <- reactive({
+    req(input$upload)
+    x <- input$upload$datapath
+    x
+  })
 
   output$download <- downloadHandler(
     filename = "Margaret.xlsx",
@@ -609,24 +610,25 @@ server <- function(input, output) {
                           '" target="_blank">Link</a>'))
     if (filtro()==FALSE)
     {
-      datatable(articulos_2016_2020 ,filter = 'top',extensions = c('Scroller','Buttons'),
-                options = list(dom = 'Bfrtip',
-                               buttons =
-                                 list('copy', list(
-                                   extend = 'collection',
-                                   buttons = c('csv', 'excel', 'pdf'),
-                                   text = 'Download'
-                                 )),
-                               deferRender = TRUE,
-                               scrollY = 420,
-                               scroller = TRUE,
-                               scrollX = TRUE),
-                escape = FALSE,
-                class = ('cell-border stripe'),
-                colnames = c("Grupo", "Categoría", "Tipo producto",
-                             "Título", "País revista", "Revista",
-                             "ISSN","Categoría Publindex", "Categoría Scimago", "Año", "Volumen",
-                             "Fasc","Paginas", "Enlace artículo", "Autores"))
+      datatable(margaret())
+      # datatable(articulos_2016_2020 ,filter = 'top',extensions = c('Scroller','Buttons'),
+      #           options = list(dom = 'Bfrtip',
+      #                          buttons =
+      #                            list('copy', list(
+      #                              extend = 'collection',
+      #                              buttons = c('csv', 'excel', 'pdf'),
+      #                              text = 'Download'
+      #                            )),
+      #                          deferRender = TRUE,
+      #                          scrollY = 420,
+      #                          scroller = TRUE,
+      #                          scrollX = TRUE),
+      #           escape = FALSE,
+      #           class = ('cell-border stripe'),
+      #           colnames = c("Grupo", "Categoría", "Tipo producto",
+      #                        "Título", "País revista", "Revista",
+      #                        "ISSN","Categoría Publindex", "Categoría Scimago", "Año", "Volumen",
+      #                        "Fasc","Paginas", "Enlace artículo", "Autores"))
     }
     else
     {
