@@ -12,204 +12,39 @@ library(shinydashboard)
 library(writexl)
 library(margaret)
 #-----------------------------------------------------------------------------------------------------#
-#grupos = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\UCLA.csv", header=T, sep=",")
-#inves_UCLA = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\inves.csv", header=T, sep=",")
-UCLA = read.csv("C:\\Users\\User\\Downloads\\UCLA.csv", header=T, sep=",")
 
-margaret = getting_data(UCLA)
- #-----------------------------------------------------------------------------------------------------#
-#articulos_unicos_2016_2020 <-
-#  margaret <- margaret[["articulos"]]
-
-investigadores_general <- margaret[["grupo_researcher_cleaned"]]
-
-grupos_general <- margaret[["grupo_main_cleaned"]]
-
-revistas_actuales <-
-  read_csv(here("R/Shiny/output",
-                "current_journals.csv"))
-
-articulos_2016_2020 <- margaret[["articulos"]]
-
-paises_general <- articulos_2016_2020 |>
-  count(pais_revista, sort = TRUE)
-paises_general$porcentaje <- round(prop.table(paises_general$n),3)*100
-
-capitulos_2016_2020 <- margaret[["capitulos"]]
-
-libros_2016_2020 <- margaret[["libros"]]
-
-software_2016_2020 <- margaret[["softwares"]]
-
-trabajo_2016_2020 <- margaret[["trabajos_dirigidos"]]
-
-innovacion_2016_2020 <- margaret[["innovaciones_procesos"]]
-
-actividades_evaluador <- margaret[["actividades_evaluador"]]
-
-actividades_formacion <- margaret[["actividades_formacion"]]
-
-apropiacion_social <- margaret[["apropiacion_social_conocimiento"]]
-
-conceptos_tecnicos <- margaret[["conceptos_tecnicos"]]
-
-consultorias <- margaret[["consultorias"]]
-
-cursos <- margaret[["cursos"]]
-
-demas_trabajos <- margaret[["demas_trabajos"]]
-
-#investigadores
-# df_researchers <-
-#   read.csv(here("output",
-#                 "df_researcher.csv"))
-
-divulgacion_publica_contenidos_transmedia <-
-  margaret[["divulgacion_publica_contenidos_transmedia"]]
-
-documentos_trabajo <-margaret[["documentos_trabajo"]]
-
-ediciones <- margaret[["ediciones"]]
-
-Eliminados_por_grupo <-
-  read_csv(here("R/Shiny/output",
-                "Eliminados_por_grupo.csv"))
-
-espacios_participacion <- margaret[["espacios_participacion"]]
-
-estrategias_comunicacion <- margaret[["estrategias_comunicacion"]]
-
-estrategias_pedagogicas <- margaret[["estrategias_pedagogicas"]]
-
-eventos_cientificos <- margaret[["eventos_cientificos"]]
-
-generacion_contenido_audio <-
-  margaret[["generacion_contenido_audio"]]
-
-generacion_contenido_impreso <-
-  margaret[["generacion_contenido_impreso"]]
-
-generacion_contenido_virtual <- margaret[["generacion_contenido_virtual"]]
-
-generacion_multimedia <-
-  margaret[["generacion_multimedia"]]
-
-informes_investigacion <- margaret[["informes_investigacion"]]
-
-informes_tecnicos <- margaret[["informes_tecnicos"]]
-
-innovaciones_gestion <- margaret[["innovaciones_gestion"]]
-
-innovaciones_procesos <- margaret[["innovaciones_procesos"]]
-
-international_journals_2021 <-
-  read_csv(here("R/Shiny/output",
-                "international_journals_2021.csv"))
-
-journals_2016_2020 <-
-  read_csv(here("R/Shiny/output",
-                "journals_2016_2020.csv"))
-
-journals_international_2016_2020 <-
-  read_csv(here("R/Shiny/output",
-                "journals_international_2016_2020.csv"))
-
-jurado <- margaret[["jurado"]]
-
-libros_divulgacion <- margaret[["libros_divulgacion"]]
-
-libros_formacion <- margaret[["libros_formacion"]]
-
-manuales_guias_especializadas <-
-  margaret[["manuales_guias_especializadas"]]
-
-notas_cientificas <- margaret[["notas_cientificas"]]
-
-nuevos_registros_cientificos <-
-  margaret[["nuevos_registros_cientificos"]]
-
-otra_publicacion_divulgativa <- margaret[["otra_publicacion_divulgativa"]]
-
-otros_articulos <- margaret[["otros_articulos"]]
-
-otros_libros <- margaret[["otros_libros"]]
-
-otros_productos_tencologicos <- margaret[["otros_productos_tencologicos"]]
-
-participacion_ciudadana_cti <- margaret[["participacion_ciudadana_cti"]]
-
-participacion_comites <- margaret[["participacion_comites"]]
-
-produccion_tecnica_tecnologica <-
-  margaret[["produccion_tecnica_tecnologica"]]
-
-Producciones_de_contenido_digital <-
-  margaret[["Producciones_de_contenido_digital"]]
-
-producciones_digital_audiovisual <-
-  margaret[["Producciones_digital_audiovisual"]]
-
-redes_conocimiento <-
-  margaret[["redes_conocimiento"]]
-
-reglamentos_tecnicos <- margaret[["reglamentos_tecnicos"]]
-
-regulaciones_normas <- margaret[["regulaciones_normas"]]
-
-signos_distintivos <- margaret[["signos_distintivos"]]
-
-similares_entre_grupo <-
-  read_csv(here("R/Shiny/output",
-                "Similares_entre_grupo.csv"))
-
-traducciones <- margaret[["traducciones"]]
-
+get_data <- function(data){
+  new_data <- getting_data(data)
+  return(new_data)
+}
 #-----------------------------------------------------------------------------------------------------#
-margaret <- list("grupos_general"=grupos_general,"investigadores"=investigadores_general,"articulos"=articulos_2016_2020,
-                 "actividades_evaluador"=actividades_evaluador,"actividades_formacion"=actividades_formacion,
-                 "apropiacion_social_conocimiento"=apropiacion_social,
-                 "capitulos"=capitulos_2016_2020,"conceptos_tecnicos"=conceptos_tecnicos,"consultorias"=consultorias,
-                 "cursos"=cursos,"demas_trabajos"=demas_trabajos,
-                 "divulgacion_publica_contenidos_transmedia"=divulgacion_publica_contenidos_transmedia,
-                 "documentos_trabajo"=documentos_trabajo,"ediciones"=ediciones,
-                 "espacios_participacion"=espacios_participacion,"estrategias_comunicacion"=estrategias_comunicacion,
-                 "estrategias_pedagogicas"=estrategias_pedagogicas,"eventos_cientificos"=eventos_cientificos,
-                 "generacion_contenido_audio"=generacion_contenido_audio,
-                 "generacion_contenido_impreso"=generacion_contenido_impreso,"generacion_contenido_virtual"=generacion_contenido_virtual,
-                 "generacion_multimedia"=generacion_multimedia,"informes_investigacion"=informes_investigacion,"informes_tecnicos"=informes_tecnicos,
-                 "innovaciones_gestion"=innovaciones_gestion,"innovaciones_procesos"=innovaciones_procesos,
-                 "jurado"=jurado,"libros_divulgaciones"=libros_divulgacion,"libros_formacion"=libros_formacion,"libros"=libros_2016_2020,
-                 "manuales_guias_especializadas"=manuales_guias_especializadas,"notas_cientificas"=notas_cientificas,
-                 "nuevos_registros_cientificos"=nuevos_registros_cientificos,"otra_publicacion_divulgativa"=otra_publicacion_divulgativa,
-                 "otros_articulos"=otros_articulos,"otros_libros"=otros_libros,"otros_productos_tecnologicos"=otros_productos_tencologicos,
-                 "participacion_ciudadana_cti"=participacion_ciudadana_cti,"participacion_comites"=participacion_comites,
-                 "produccion_tecnica_tecnologia"=produccion_tecnica_tecnologica,"producciones_de_contenido_digital"=Producciones_de_contenido_digital,
-                 "producciones_digital_audiovisual"=producciones_digital_audiovisual,"redes_conocimiento"=redes_conocimiento,
-                 "reglamentos_tecnicos"=reglamentos_tecnicos,"regulaciones_normas"=regulaciones_normas,"signos_distintivos"=signos_distintivos,
-                 "software"=software_2016_2020,"trabajos_dirigidos"=trabajo_2016_2020,"traducciones"=traducciones,
-                 "similares_entre_grupo"=similares_entre_grupo,"eliminados_por_grupo"=Eliminados_por_grupo)
+# grupos = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\UCLA.csv", header=T, sep=",")
+# #inves_UCLA = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\inves.csv", header=T, sep=",")
+# #UCLA = read.csv("C:\\Users\\User\\Downloads\\UCLA.csv", header=T, sep=",")
+#
+# margaret = getting_data(grupos)
 #-----------------------------------------------------------------------------------------------------#
 #dataframe filtros
 #filtro grupo
 
-grupos <- grupos_general |>
-  select(grupo) |>
-  unique()
-
-general_grupos <- list(grupos$grupo)
+# grupos <- grupos_general |>
+#   select(grupo) |>
+#   unique()
+#
+# general_grupos <- list(grupos$grupo)
 
 #-----------------------------------------------------------------------------------------------------#
 #Inicio
-filterside <- selectInput("grupos_input","Grupos:",
-                          c('General'= FALSE, grupos$grupo),
-                          selectize = FALSE)
+# filterside <- selectInput("grupos_input","Grupos:",
+#                           c('General'= FALSE, margaret()$grupo),
+#                           selectize = FALSE)
 
 #butonside <- actionButton("aplicar_input", "Aplicar")
 
 sliderside <- sliderInput("fechas_input", "Años:", min = 2014, max = 2022, value = c(2016,2022), sep = "")
 
 sidebar <- dashboardSidebar(
-  filterside,
+  #filterside,
   sliderside,
   #butonside,
   sidebarMenu(
@@ -241,7 +76,7 @@ setup <- dashboardBody(
             fluidPage(br(), h2("Importar grupos y direcciones URL para ejecutar Margaret"),br(), fileInput("upload", "Choose csv or excel file", accept = c(".xlsx", ".csv"), width = '500px'))),
     tabItem(tabName = "general_datos",
             tabsetPanel(type = "tabs",
-                        tabPanel("Grupos", fluidPage(br(),(DT::dataTableOutput('ex1'))
+                        tabPanel("Grupos", fluidPage(br(),h3(textOutput("carga")),(DT::dataTableOutput('ex1'))
                         ),),
 
                         tabPanel("Investigadores", fluidPage(br(),(DT::dataTableOutput('ex2'))
@@ -327,28 +162,44 @@ server <- function(input, output) {
 
   margaret <- reactive({
     req(input$upload)
-    x <- input$upload$datapath
-    x
+    data <- read.csv(input$upload$datapath, header = TRUE)
+    print(input$upload$datapath)
+    new_data <- get_data(data)
+    return(new_data)
   })
 
   output$download <- downloadHandler(
     filename = "Margaret.xlsx",
     content = function(file) {
-      write_xlsx(data, file)
+      write_xlsx(margaret(), file)
     }
   )
 
+  getstatus <- reactive(
+    if(is.null(input$upload)){
+      "Por favor Importar archivo para visualizar la información"
+
+    }
+  )
+
+  output$carga <- renderText({
+    getstatus()
+  })
 
   output$ex1 <- DT::renderDataTable(server = FALSE,{
-    grupos_general <- grupos_general |>
-      select(grupo, clasificacion, sum_papers, departamento , url.x,
-             fecha_creacion,lider, email, area_conocimiento_1) |>
-      mutate(url.x= str_c('<a href="',
-                        url.x,
-                        '" target="_blank">Link</a>'))
-    if (filtro()==FALSE)
-    {
-      datatable(grupos_general, filter = 'top',extensions = c('Scroller','Buttons'),
+
+    grupos_general <- margaret()
+    grupos_general2 <- as.data.frame(grupos_general[1]) |>
+      select(grupo_main_cleaned.grupo, grupo_main_cleaned.clasificacion,
+             grupo_main_cleaned.web, grupo_main_cleaned.sum_papers,
+             grupo_main_cleaned.departamento, grupo_main_cleaned.url.x,
+             grupo_main_cleaned.fecha_creacion, grupo_main_cleaned.lider,
+             grupo_main_cleaned.email, grupo_main_cleaned.area_conocimiento_1) |>
+      mutate(grupo_main_cleaned.url.x= str_c('<a href="',grupo_main_cleaned.url.x,
+                               '" target="_blank">Link</a>'),
+             grupo_main_cleaned.web = str_c('<a href="',grupo_main_cleaned.web,
+                                            '" target="_blank">Link</a>')) |>
+      datatable(filter = 'top',extensions = c('Scroller','Buttons'),
                 options = list(dom = 'Bfrtip',
                                buttons =
                                  list('copy', list(
@@ -362,36 +213,11 @@ server <- function(input, output) {
                                scrollX = TRUE),
                 escape = FALSE,
                 rownames = FALSE,
-                colnames = c("Grupo", "Clasificación", "Cantidad artículos",
+                colnames = c("Grupo", "Clasificación", "Pagina web", "Cantidad artículos",
                              "Departamento","GrupLAC",
                              "Fecha Creación", "Líder", "Email",
                              "Área de Conocimiento"),
                 class = 'cell-border stripe')
-    }
-    else
-    {
-      grupos_general |>
-        filter(grupo == filtro()) |>
-        datatable(filter = 'top',extensions = c('Scroller','Buttons'),
-                  options = list(dom = 'Bfrtip',
-                                 buttons =
-                                   list('copy', list(
-                                     extend = 'collection',
-                                     buttons = c('csv', 'excel', 'pdf'),
-                                     text = 'Download'
-                                   )),
-                                 deferRender = TRUE,
-                                 scrollY = 420,
-                                 scroller = TRUE,
-                                 scrollX = TRUE),
-                  escape = FALSE,
-                  rownames = FALSE,
-                  colnames = c("Grupo", "Clasificación", "Cantidad artículos",
-                               "Departamento","GrupLAC",
-                               "Fecha Creación", "Líder", "Email",
-                               "Área de Conocimiento"),
-                  class = 'cell-border stripe')
-    }
   })
 
   output$ex2 <- DT::renderDataTable(server = FALSE,{
