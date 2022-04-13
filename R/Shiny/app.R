@@ -6,6 +6,7 @@ library(here)
 library(DT)
 library(plotly)
 library(readxl)
+library(openxlsx)
 library(stringi)
 library(stringr)
 library(shinydashboard)
@@ -84,10 +85,15 @@ sidebar <- dashboardSidebar(
 setup <- dashboardBody(
   tabItems(
     tabItem(tabName = "importar_datos",
-            fluidPage(br(), h2("Importar grupos y direcciones URL para ejecutar Margaret") ,br(), fileInput("upload", "Choose csv or excel file", accept = c(".xlsx", ".csv"), width = '500px')),
-            br(),actionButton("go", "Subir"),br(),br(),
-            img(src='img/prueba.png'),br(),br(),
-            HTML('<img src="img/prueba.png" height="150">')),
+            fluidPage(br(), h2("Importar grupos y direcciones URL para ejecutar Margaret"), fileInput("upload", "Choose csv or excel file", accept = c(".xlsx", ".csv"), width = '500px')),
+            actionButton("go", "Subir"),br(),h2("Imagen Ejemplo"),
+            column(1, align="left", offset = 1,
+                   a(img(src="ejemplo.png", height=200, width=600),
+                     target="_blank"),
+            #column(1, align="left", offset = 4,
+                    #a(img(src="ejemploCsv.png", height=400, width=500),
+                      # target="_blank"))
+            )),
     tabItem(tabName = "general_datos",
             tabsetPanel(type = "tabs",
                         tabPanel("Grupos", fluidPage(br(),h3(textOutput("carga")),(DT::dataTableOutput('ex1'))
@@ -177,11 +183,22 @@ server <- function(input, output) {
 
   margaret <- reactive({
     req(input$upload)
-    data <- read.csv(input$upload$datapath, header = TRUE)
-    print(input$upload$datapath)
+
+    ext <- input$upload$datapath
+    ext <- str_remove(ext, ".*/0.")
+
+    if(ext == "xlsx")
+    {
+      data <- read.xlsx(input$upload$datapath)
+    }else{
+      data <- read.csv(input$upload$datapath, header = TRUE)
+    }
+
     showModal(modalDialog("Exportanto información a Margaret espere un momento",
                             shiny_busy(), easyClose = FALSE))
+
     new_data <- get_data(data)
+
     if(is.null(input$upload)){
       showModal(modalDialog("Hubo un problema, intentelo de nuevo"))
     }else{
