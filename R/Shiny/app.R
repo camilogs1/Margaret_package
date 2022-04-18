@@ -6,6 +6,7 @@ library(here)
 library(DT)
 library(plotly)
 library(readxl)
+library(openxlsx)
 library(stringi)
 library(stringr)
 library(shinydashboard)
@@ -16,6 +17,17 @@ library(margaret)
 get_data <- function(data){
   new_data <- getting_data(data)
   return(new_data)
+}
+
+#Prueba cargando
+shiny_busy <- function() {
+  HTML("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", paste0(
+    '<span data-display-if="',
+    '$(&#39;html&#39;).attr(&#39;class&#39;)==&#39;shiny-busy&#39;',
+    '">',
+    '<i class="fa fa-spinner fa-pulse fa-fw" style="color:orange"></i>',
+    '</span>'
+  ))
 }
 #-----------------------------------------------------------------------------------------------------#
 # grupos = read.csv("C:\\Users\\bryan\\Desktop\\Cienciometria\\prueba\\UCLA.csv", header=T, sep=",")
@@ -73,7 +85,12 @@ sidebar <- dashboardSidebar(
 setup <- dashboardBody(
   tabItems(
     tabItem(tabName = "importar_datos",
-            fluidPage(br(), h2("Importar grupos y direcciones URL para ejecutar Margaret"),br(), fileInput("upload", "Choose csv or excel file", accept = c(".xlsx", ".csv"), width = '500px'))),
+            fluidPage(br(), h2("Importar grupos y direcciones URL para ejecutar Margaret"), fileInput("upload", "Choose csv or excel file", accept = c(".xlsx", ".csv"), width = '500px')),
+            actionButton("go", "Subir"),br(),h2("Estructura del archivo"),br(),h4('El archivo debe contener los siguientes titulos de columna. "grupo, url" (En minuscula)'),
+            column(1, align="left", offset = 1,
+                   a(img(src="ejemplo3.png", height=200, width=530),
+                     target="_blank")
+            )),
     tabItem(tabName = "general_datos",
             tabsetPanel(type = "tabs",
                         tabPanel("Grupos", fluidPage(br(),h3(textOutput("carga")),(DT::dataTableOutput('ex1'))
@@ -132,7 +149,7 @@ setup <- dashboardBody(
 )
 
 ui <- dashboardPage(
-  skin = "yellow",
+  skin = "red",
   dashboardHeader(title = "Margaret",
                   dropdownMenu(type = "notifications", icon = shiny::icon("code"),
                                badgeStatus = "info", headerText = "Desarrolladores",
@@ -161,13 +178,34 @@ server <- function(input, output) {
 
   filtro_fecha_max <- reactive({input$fechas_input[2]})
 
-
   margaret <- reactive({
     req(input$upload)
-    data <- read.csv(input$upload$datapath, header = TRUE)
-    print(input$upload$datapath)
+
+    ext <- input$upload$datapath
+    ext <- str_remove(ext, ".*/0.")
+
+    if(ext == "xlsx")
+    {
+      data <- read.xlsx(input$upload$datapath)
+    }else{
+      data <- read.csv(input$upload$datapath, header = TRUE)
+    }
+
+    showModal(modalDialog("Exportanto información a Margaret espere un momento",
+                            shiny_busy(), easyClose = FALSE))
+
     new_data <- get_data(data)
+
+    if(is.null(input$upload)){
+      showModal(modalDialog("Hubo un problema, intentelo de nuevo"))
+    }else{
+      showModal(modalDialog("Margaret se ejecutó correctamente"))
+    }
     return(new_data)
+  })
+
+  observeEvent(input$go, {
+    margaret()
   })
 
   output$download <- downloadHandler(
@@ -180,13 +218,26 @@ server <- function(input, output) {
   getstatus <- reactive(
     if(is.null(input$upload)){
       "Por favor Importar archivo para visualizar la información"
-
     }
   )
 
   output$carga <- renderText({
     getstatus()
   })
+
+  # output$imagen <- renderImage({
+  #
+  #   outfile <- tempfile(fileext = 'img/prueba.png')
+  #
+  #   png(outfile, width = 400, height = 300)
+  #   hist(rnorm(input$obs), main = "Generated in renderImage()")
+  #   dev.off()
+  #
+  #   list(src = outfile,
+  #        width = 400,
+  #        height = 300,
+  #        alt = "Imagen ejemplo")
+  # }, deleteFile = TRUE)
 
   output$ex1 <- DT::renderDataTable(server = FALSE,{
 
