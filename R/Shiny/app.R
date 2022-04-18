@@ -86,9 +86,9 @@ setup <- dashboardBody(
   tabItems(
     tabItem(tabName = "importar_datos",
             fluidPage(br(), h2("Importar grupos y direcciones URL para ejecutar Margaret"), fileInput("upload", "Choose csv or excel file", accept = c(".xlsx", ".csv"), width = '500px')),
-            actionButton("go", "Subir"),br(),h2("Estructura del archivo"),br(),
+            actionButton("go", "Subir"),br(),h2("Estructura del archivo"),br(),h4('El archivo debe contener los siguientes titulos de columna. "grupo, url" (En minuscula)'),
             column(1, align="left", offset = 1,
-                   a(img(src="ejemplo.png", height=200, width=900),
+                   a(img(src="ejemplo3.png", height=200, width=530),
                      target="_blank")
             )),
     tabItem(tabName = "general_datos",
